@@ -18,3 +18,51 @@ The Birthday Wishes App is ideal for anyone who values personal relationships, f
 3.	**UI/UX Design:** Creating a user-friendly interface that is both appealing and intuitive.
 4.	**Notifications and Background Services:** Implementing notifications and services that run in the background for sending wishes.
 5.	**Testing and Debugging:** To ensure smooth functionality across different Android versions and devices.
+
+
+## Basic idea For Data Model:
+- **Collection:** Users
+  
+  Each document in this collection represents a user of the app.
+  - **UserID:** Unique identifier for the user.
+  - **Email:** User's email address.
+  - **PasswordHash:** Hashed password for secure authentication.
+  - **BirthdayContacts:** An array of references to Birthday Contact documents.
+
+  **Sample Data:**
+    ```JSON
+    {
+      "UserID": "user123",
+      "Email": "john.doe@example.com",
+      "PasswordHash": "hashedpassword123",
+       "BirthdayContacts": ["contact123", "contact456"]
+    }
+    ```
+
+- **Collection:** BirthdayContacts
+  
+  Each document in this collection represents a birthday contact added by a user.
+  - **ContactID:** Unique identifier for the contact.
+  - **UserID:** Reference to the user who added this contact.
+  - **FirstName:** First name of the contact.
+  - **LastName:** Last name of the contact.
+  - **RelationType:** The type of relationship with the user (e.g., friend, family, colleague).
+  - **BirthdayDate:** The contact's birthday date.
+  - **BirthdayWish:** An optional pre-set birthday wishes for the contact. Else random wish will be sent.
+  - **Contact Number:** Contacts's phone number for sending wishes.
+  
+  **Sample Data**:
+  ```JSON
+  {
+  "ContactID": "contact123",
+  "UserID": "user123",
+  "FirstName": "Jane",
+  "LastName": "Doe",
+  "RelationType": "Friend",
+  "BirthdayDate": "1990-05-12",
+  "BirthdayWish": "Happy Birthday, Jane! Hope you have a fantastic day!",
+  "ContactNumber": 1234567890,
+  }
+  ```
+
+
