@@ -14,7 +14,7 @@ android {
         // for view binding:
         // viewBinding = true
     }
-    
+
     defaultConfig {
         applicationId = "com.example.birthdaywhisher"
         minSdk = 24
