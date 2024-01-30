@@ -7,8 +7,9 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="410dp"
-        android:layout_height="57dp"
+        android:id="@+id/linearLayout"
+        android:layout_width="411dp"
+        android:layout_height="72dp"
         android:background="#009688"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,20 +18,62 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="419dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
             android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
             android:gravity="center|start"
             android:includeFontPadding="false"
-            android:paddingStart="2dp"
-            android:paddingLeft="2dp"
+            android:padding="5dp"
+            android:paddingLeft="20dp"
             android:paddingTop="2dp"
             android:paddingEnd="2dp"
             android:paddingRight="2dp"
             android:paddingBottom="2dp"
             android:text="Login"
             android:textAlignment="inherit"
-            android:textSize="24sp" />
+            android:textColor="#FFFFFF"
+            android:textSize="34sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="342dp"
+        android:layout_height="329dp"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.0">
+
+        <EditText
+            android:id="@+id/editEmail"
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editPassword"
+            android:layout_width="325dp"
+            android:layout_height="67dp"
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Login"
+            android:textSize="20sp" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

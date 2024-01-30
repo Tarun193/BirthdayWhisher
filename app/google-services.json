@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "542162562542",
+    "project_id": "birthday-wisher-5274d",
+    "storage_bucket": "birthday-wisher-5274d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542162562542:android:d086dd4c8251668f1e72ff",
+        "android_client_info": {
+          "package_name": "com.example.birthdaywhisher"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADtiB9pzGzh8hHcRfPb-zT2QRSB4NdWtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
