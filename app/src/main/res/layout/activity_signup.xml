@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity_signup">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -30,49 +30,89 @@
             android:paddingEnd="2dp"
             android:paddingRight="2dp"
             android:paddingBottom="2dp"
-            android:text="Login"
+            android:text="SignUp"
             android:textAlignment="inherit"
             android:textColor="#FFFFFF"
             android:textSize="34sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="342dp"
-        android:layout_height="329dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="363dp"
+        android:layout_height="545dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="8dp"
         android:orientation="vertical"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.317">
+
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="text"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/editEmail"
             android:layout_width="match_parent"
             android:layout_height="67dp"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:ems="10"
             android:hint="Email"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editPassword"
-            android:layout_width="325dp"
+            android:id="@+id/editPassword1"
+            android:layout_width="match_parent"
             android:layout_height="67dp"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:ems="10"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editPassword2"
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:ems="10"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/LoginLink"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="#2196F3"
+            android:textSize="20sp"
+            android:text="Login" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Login"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="SignUp"
             android:textSize="20sp" />
 
     </LinearLayout>
