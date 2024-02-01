@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.birthdaywhisher.databinding.ActivitySignupBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
@@ -27,31 +28,15 @@ class activity_signup : AppCompatActivity() {
 
         binding.button.setOnClickListener{
 
-//            Checking if any of the field from the form is empty adding an error to that field
-            if(binding.editName.text.toString().trim().isEmpty()){
-                binding.editName.error = "Name required";
-            }
-
-            if(binding.editEmail.text.toString().trim().isEmpty()){
-                binding.editEmail.error = "Email required";
-            }
-
-            if(binding.editPassword1.text.toString().trim().isEmpty()){
-                binding.editPassword1.error = "password required";
-            }
-
-            if(binding.editPassword2.text.toString().trim().isEmpty()){
-                binding.editPassword2.error = "password confirmation required";
-            }
-
 //            Grabbing all the values from the form;
             var email = binding.editEmail.text.toString();
             var password1 = binding.editPassword1.text.toString();
             var password2 = binding.editPassword2.text.toString();
             var name = binding.editName.text.toString();
 
+
 //            Checking weather all the fields are filled or not.
-            if(!(email.isEmpty() || name.isEmpty() || password2.isEmpty() || password1.isEmpty())) {
+            if(!checkEmpty()) {
                 // Checking whether both passwords are equal or not.
                 if (password2 == password1) {
 //                  creating user by calling createUserWithEmailAndPassword method on auth instance
@@ -64,20 +49,9 @@ class activity_signup : AppCompatActivity() {
                             if (task.isSuccessful) {
 //                                Grabbing the current user as the user is signed in now.
                                 val user = auth.currentUser;
-
-//                                Now adding that user to User collection
-                                val userMap = hashMapOf(
-                                    "email" to user?.email,
-                                    "name" to name,
-                                )
-                                user?.uid?.let {
-                                    db.collection("Users").document(it).set(userMap)
-                                        .addOnSuccessListener {
-                                            Log.d("Firebase", "successfully account created");
-                                        }.addOnFailureListener { e ->
-                                        Log.w("Firebase", "Error writing document", e)
-                                    }
-                                }
+                                addUserToCollection(user, name);
+                                Toast.makeText(this, "Account has been created", Toast.LENGTH_SHORT).show()
+                                clearText();
                             }
                         }
                 }
@@ -95,5 +69,54 @@ class activity_signup : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun checkEmpty(): Boolean {
+        var result = false;
+        //            Checking if any of the field from the form is empty adding an error to that field
+
+        if(binding.editName.text.toString().trim().isEmpty()){
+            binding.editName.error = "Name required";
+            result = true;
+        }
+
+        if(binding.editEmail.text.toString().trim().isEmpty()){
+            binding.editEmail.error = "Email required";
+            result = true;
+        }
+
+        if(binding.editPassword1.text.toString().trim().isEmpty()) {
+            binding.editPassword1.error = "password required";
+            result = true;
+        }
+
+        if(binding.editPassword2.text.toString().trim().isEmpty()){
+            binding.editPassword2.error = "password confirmation required";
+            result = true;
+        }
+        return result;
+    }
+
+    private fun addUserToCollection(user: FirebaseUser?, name: String) {
+//        Now adding that user to User collection
+        val userMap = hashMapOf(
+            "email" to user?.email,
+            "name" to name,
+        )
+        user?.uid?.let {
+            db.collection("Users").document(it).set(userMap)
+                .addOnSuccessListener {
+                    Log.d("Firebase", "successfully account created");
+                }.addOnFailureListener { e ->
+                    Log.w("Firebase", "Error writing document", e)
+                }
+        }
+    }
+
+    private fun clearText(){
+        binding.editName.text.clear();
+        binding.editEmail.text.clear();
+        binding.editPassword2.text.clear();
+        binding.editPassword1.text.clear();
     }
 }
