@@ -1,6 +1,7 @@
 package com.example.birthdaywhisher
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,10 +41,17 @@ class SignupFragment : Fragment() {
         binding.button.setOnClickListener{
 
 //            Grabbing all the values from the form;
-            var email = binding.editEmail.text.toString();
-            var password1 = binding.editPassword1.text.toString();
-            var password2 = binding.editPassword2.text.toString();
-            var name = binding.editName.text.toString();
+            val email = binding.editEmail.text.toString();
+            val password1 = binding.editPassword1.text.toString();
+            val password2 = binding.editPassword2.text.toString();
+            val name = binding.editName.text.toString();
+
+            var PasswordStrong = true;
+
+            if(checkPassword()){
+                Toast.makeText(activity, "Password should be at least 6 characters", Toast.LENGTH_SHORT).show();
+                PasswordStrong = false;
+            }
 
 
 //            Checking weather all the fields are filled or not.
@@ -56,7 +64,7 @@ class SignupFragment : Fragment() {
                      */
 
                     activity?.let { act ->
-                        if (act is Activity) {
+                        if (act is Activity && PasswordStrong) {
                             auth.createUserWithEmailAndPassword(email, password1)
                                 .addOnCompleteListener(act) { task ->
 //                            the task here store the information that creating user was a successful task or not.
@@ -66,8 +74,10 @@ class SignupFragment : Fragment() {
                                         addUserToCollection(user, name);
                                         Toast.makeText(activity, "Account has been created", Toast.LENGTH_SHORT).show()
                                         clearText();
+                                        var intent = Intent(act, activity_home::class.java);
+                                        startActivity(intent);
                                     }else{
-                                        Toast.makeText(activity, "an error occured", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(activity, "an error occurred", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                         }
@@ -136,6 +146,10 @@ class SignupFragment : Fragment() {
         binding.editEmail.text.clear();
         binding.editPassword2.text.clear();
         binding.editPassword1.text.clear();
+    }
+
+    private fun checkPassword(): Boolean {
+        return binding.editPassword1.text.toString().length < 6;
     }
 
 }

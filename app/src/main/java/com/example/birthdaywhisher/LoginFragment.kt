@@ -1,6 +1,7 @@
 package com.example.birthdaywhisher
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -52,6 +53,8 @@ class LoginFragment: Fragment(){
                                 val user = auth.currentUser;
                                 Toast.makeText(act, "Logged in successfully!!", Toast.LENGTH_SHORT).show();
                                 clearText();
+                                var intent = Intent(act, activity_home::class.java);
+                                startActivity(intent);
                             }
                             else{
                                 Log.i("Firebase", "Some Error occurred", task.exception)
