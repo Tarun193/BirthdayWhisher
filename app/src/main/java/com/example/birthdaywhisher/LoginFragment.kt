@@ -51,6 +51,7 @@ class LoginFragment: Fragment(){
                             if(task.isSuccessful){
                                 val user = auth.currentUser;
                                 Toast.makeText(act, "Logged in successfully!!", Toast.LENGTH_SHORT).show();
+                                clearText();
                             }
                             else{
                                 Log.i("Firebase", "Some Error occurred", task.exception)
@@ -73,5 +74,10 @@ class LoginFragment: Fragment(){
             result = true;
         }
         return result;
+    }
+
+    private fun clearText(){
+        binding.editEmail.text.clear();
+        binding.editPassword.text.clear();
     }
 }
