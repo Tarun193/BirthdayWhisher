@@ -84,6 +84,15 @@
             android:text="Login"
             android:textSize="20sp" />
 
+        <Button
+            android:id="@+id/Google"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:text="Continue with Google"
+            android:textSize="20sp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

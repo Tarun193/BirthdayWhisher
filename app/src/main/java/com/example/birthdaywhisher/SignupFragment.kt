@@ -8,21 +8,57 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.birthdaywhisher.databinding.FragmentSignupBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+
 
 class SignupFragment : Fragment() {
     private var _binding: FragmentSignupBinding? = null;
     private lateinit var auth: FirebaseAuth;
     private lateinit var db: FirebaseFirestore;
+    private lateinit var googleSignInClient: GoogleSignInClient;
+    private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
+
+
     private val binding get() = _binding!!;
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        googleSignInLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                Log.i("Firebase", "${result.resultCode} ${Activity.RESULT_OK}");
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                    handleSignInResult(task)
+                }else {
+                    // Handle cancellation or error
+                    if (result.data != null) {
+                        // Attempt to retrieve any error information from the intent
+                        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                        handleSignInResult(task)
+                    } else {
+                        // No data available; the user likely cancelled the sign-in
+                        Log.i("Firebase", "Sign-in cancelled or an error occurred.")
+                    }
+                }
+            }
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSignupBinding.inflate(inflater, container, false);
         return binding.root;
@@ -37,6 +73,12 @@ class SignupFragment : Fragment() {
         //        Grabbing firebase services instance
         auth = Firebase.auth;
         db = Firebase.firestore
+
+        googleSignInClient = getGoogleSignInClient()
+
+        binding.Google.setOnClickListener {
+            signInWithGoogle()
+        }
 
         binding.button.setOnClickListener{
 
@@ -98,7 +140,6 @@ class SignupFragment : Fragment() {
         }
     }
 
-
     private fun checkEmpty(): Boolean {
         var result = false;
         //            Checking if any of the field from the form is empty adding an error to that field
@@ -150,6 +191,49 @@ class SignupFragment : Fragment() {
 
     private fun checkPassword(): Boolean {
         return binding.editPassword1.text.toString().length < 6;
+    }
+
+    private fun getGoogleSignInClient(): GoogleSignInClient {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.web_client_id)) // Make sure you have the correct web client id
+            .requestEmail()
+            .build()
+        return GoogleSignIn.getClient(requireActivity(), gso)
+    }
+
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+            // You can now use the account's information to perform further authentication steps
+            firebaseAuthWithGoogle(account.idToken!!)
+        } catch (e: ApiException) {
+            // Handle sign-in failure
+            Log.w("Firebase", "Google sign in failed", e)
+        }
+    }
+
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    Log.i("Firebase","${auth.currentUser?.displayName} ${auth.currentUser?.email}")
+//                    findNavController().navigate(R.id.action_signupFragment_to_nextFragment)
+                    Toast.makeText(activity, "Login done!!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Sign-in failure, display a message to the user
+                    Log.w("Firebase", "signInWithCredential:failure", task.exception)
+                }
+            }
+    }
+
+
+
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        googleSignInLauncher.launch(signInIntent)
     }
 
 }
