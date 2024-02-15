@@ -1,4 +1,4 @@
-package com.example.birthdaywhisher
+package com.example.birthday_wisher
 
 import org.junit.Test
 

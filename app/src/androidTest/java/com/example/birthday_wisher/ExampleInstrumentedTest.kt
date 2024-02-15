@@ -1,4 +1,4 @@
-package com.example.birthdaywhisher
+package com.example.birthday_wisher
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "BirthdayWhisher"
+rootProject.name = "Birthday_Wisher"
 include(":app")

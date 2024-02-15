@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.birthdaywhisher"
+    namespace = "com.example.birthday_wisher"
     compileSdk = 34
 
     buildFeatures {
@@ -13,7 +13,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.birthdaywhisher"
+        applicationId = "com.example.birthday_wisher"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.example.birthdaywhisher
+package com.example.birthday_wisher
 
 import android.app.Activity
 import android.content.Intent
@@ -12,7 +12,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.birthdaywhisher.databinding.FragmentSignupBinding
+import com.example.birthday_wisher.databinding.FragmentSignupBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -61,6 +61,18 @@ class SignupFragment : Fragment() {
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSignupBinding.inflate(inflater, container, false);
+        //        Grabbing firebase services instance
+        auth = Firebase.auth;
+        db = Firebase.firestore
+
+        if(auth.currentUser !== null){
+            activity?.let{act ->
+                if(act is Activity){
+                    var intent = Intent(act, activity_home::class.java);
+                    startActivity(intent);
+                }
+            }
+        }
         return binding.root;
     }
 
@@ -69,10 +81,6 @@ class SignupFragment : Fragment() {
         binding.LoginLink.setOnClickListener{
             findNavController().navigate(R.id.action_fragment_signup_to_fragment_login);
         }
-
-        //        Grabbing firebase services instance
-        auth = Firebase.auth;
-        db = Firebase.firestore
 
         googleSignInClient = getGoogleSignInClient()
 
@@ -166,19 +174,24 @@ class SignupFragment : Fragment() {
         return result;
     }
 
-    private fun addUserToCollection(user: FirebaseUser?, name: String) {
+    private fun addUserToCollection(user: FirebaseUser?, name: String?) {
 //        Now adding that user to User collection
         val userMap = hashMapOf(
             "email" to user?.email,
             "name" to name,
         )
         user?.uid?.let {
-            db.collection("Users").document(it).set(userMap)
-                .addOnSuccessListener {
-                    Log.d("Firebase", "successfully account created");
-                }.addOnFailureListener { e ->
-                    Log.w("Firebase", "Error writing document", e)
+            val docRef =  db.collection("Users").document(it);
+           docRef.get().addOnSuccessListener { doc ->
+                if(!doc.exists()){
+                    docRef.set(userMap)
+                        .addOnSuccessListener {
+                            Log.d("Firebase", "successfully account created");
+                        }.addOnFailureListener { e ->
+                            Log.w("Firebase", "Error writing document", e)
+                        }
                 }
+            }
         }
     }
 
@@ -219,8 +232,15 @@ class SignupFragment : Fragment() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    Log.i("Firebase","${auth.currentUser?.displayName} ${auth.currentUser?.email}")
+                    Log.i("Firebase","${auth.currentUser?.displayName} ${auth.currentUser?.email}");
 //                    findNavController().navigate(R.id.action_signupFragment_to_nextFragment)
+                    addUserToCollection(auth.currentUser, auth.currentUser?.displayName);
+                    activity?.let{act ->
+                        if(act is Activity){
+                            var intent = Intent(act, activity_home::class.java);
+                            startActivity(intent);
+                        }
+                    }
                     Toast.makeText(activity, "Login done!!", Toast.LENGTH_SHORT).show();
                 } else {
                     // Sign-in failure, display a message to the user

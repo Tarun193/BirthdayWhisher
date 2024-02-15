@@ -1,4 +1,4 @@
-package com.example.birthdaywhisher
+package com.example.birthday_wisher
 
 import android.app.Activity
 import android.content.Intent
@@ -12,7 +12,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.birthdaywhisher.databinding.FragmentLoginBinding
+import com.example.birthday_wisher.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -21,9 +21,11 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 
 class LoginFragment: Fragment(){
@@ -36,6 +38,8 @@ class LoginFragment: Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
+        auth = Firebase.auth;
+        db = Firebase.firestore;
 
         googleSignInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
 
@@ -72,7 +76,6 @@ class LoginFragment: Fragment(){
             findNavController().navigate(R.id.action_fragment_login_to_fragment_signup);
         }
 
-        auth = Firebase.auth;
 
         googleSignInClient  = getGoogleSignInClient();
         binding.Google.setOnClickListener(){
@@ -103,10 +106,6 @@ class LoginFragment: Fragment(){
                 }
             }
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     private fun checkEmpty(): Boolean {
@@ -147,6 +146,13 @@ class LoginFragment: Fragment(){
                 if (task.isSuccessful) {
                     Log.i("Firebase","${auth.currentUser?.uid} ${auth.currentUser?.email}")
 //                    findNavController().navigate(R.id.action_signupFragment_to_nextFragment)
+                    addUserToCollection(auth.currentUser, auth.currentUser?.displayName);
+                    activity?.let{act ->
+                        if(act is Activity){
+                            var intent = Intent(act, activity_home::class.java);
+                            startActivity(intent);
+                        }
+                    }
                     Toast.makeText(activity, "Login done!!", Toast.LENGTH_SHORT).show();
                 } else {
                     // Sign-in failure, display a message to the user
@@ -168,5 +174,26 @@ class LoginFragment: Fragment(){
     private fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         googleSignInLauncher.launch(signInIntent)
+    }
+
+    private fun addUserToCollection(user: FirebaseUser?, name: String?) {
+//        Now adding that user to User collection
+        val userMap = hashMapOf(
+            "email" to user?.email,
+            "name" to name,
+        )
+        user?.uid?.let {
+            val docRef =  db.collection("Users").document(it);
+            docRef.get().addOnSuccessListener { doc ->
+                if(!doc.exists()){
+                    docRef.set(userMap)
+                        .addOnSuccessListener {
+                            Log.d("Firebase", "successfully account created");
+                        }.addOnFailureListener { e ->
+                            Log.w("Firebase", "Error writing document", e)
+                        }
+                }
+            }
+        }
     }
 }
