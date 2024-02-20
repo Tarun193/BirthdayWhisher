@@ -2,6 +2,9 @@
     <string name="app_name">Birthday_Wisher</string>
     <string name="web_client_id">542162562542-cn1o47bmsg6fruig1grinpb456j8gvgg.apps.googleusercontent.com</string>
     <string name="title_activity_add_user">AddUserActivity</string>
+    <string name="facebook_app_id">3626942124243237</string>
+    <string name="fb_login_protocol_scheme">fb3626942124243237</string>
+    <string name="facebook_client_token">b62a85fa98f8720f8c8e906bc4284f6c</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

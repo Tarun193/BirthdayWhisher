@@ -30,6 +30,7 @@ class activity_home: Activity() {
             db.collection("Users").document(id!!).get().addOnSuccessListener { document ->
                 if(document != null){
 //                   Toast.makeText(this,  "Welcome, " + document.data?.get("name").toString(), Toast.LENGTH_SHORT).show();
+                    binding.editWelcome.text = "Hello ${document.data?.get("name").toString()}";
             }else{
                     Log.i("Firebase", "document: not found");
                 }
