@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".AddContactFragment"
+
     >
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -41,65 +43,38 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editEmail"
+            android:id="@+id/editPhone"
             android:layout_width="match_parent"
             android:layout_height="67dp"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
+            android:hint="Phone number"
             android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
+            android:inputType="phone"
             android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/relation_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp" />
 
         <EditText
-            android:id="@+id/editPassword1"
-            android:layout_width="match_parent"
-            android:layout_height="67dp"
+            android:id="@+id/editMessage"
+            android:layout_width="353dp"
+            android:layout_height="129dp"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/editPassword2"
-            android:layout_width="match_parent"
-            android:layout_height="67dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:ems="10"
-            android:hint="Confirm Password"
-            android:inputType="textPassword"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/LoginLink"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:text="Login"
-            android:textColor="#2196F3"
-            android:textSize="20sp" />
+            android:gravity="start|top"
+            android:hint="Birthday wish (optional)"
+            android:inputType="textMultiLine" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/addContactButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:text="SignUp"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/Google"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:text="Continue with Google"
-            android:textSize="20sp" />
+            android:text="Add" />
 
     </LinearLayout>
 

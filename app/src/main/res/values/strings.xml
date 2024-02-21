@@ -5,6 +5,13 @@
     <string name="facebook_app_id">3626942124243237</string>
     <string name="fb_login_protocol_scheme">fb3626942124243237</string>
     <string name="facebook_client_token">b62a85fa98f8720f8c8e906bc4284f6c</string>
+    <string-array name="relation_array">
+        <item>Relationship Type</item>
+        <item>Family</item>
+        <item>Friend</item>
+        <item>Office</item>
+        <item>Partner</item>
+    </string-array>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

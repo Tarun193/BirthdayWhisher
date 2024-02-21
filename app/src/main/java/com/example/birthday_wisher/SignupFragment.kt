@@ -101,14 +101,14 @@ class SignupFragment : Fragment() {
             },
         )
 
-        if(auth.currentUser !== null){
-            activity?.let{act ->
-                if(act is Activity){
-                    var intent = Intent(act, activity_home::class.java);
-                    startActivity(intent);
-                }
-            }
-        }
+//        if(auth.currentUser !== null){
+//            activity?.let{act ->
+//                if(act is Activity){
+//                    var intent = Intent(act, activity_home::class.java);
+//                    startActivity(intent);
+//                }
+//            }
+//        }
         return binding.root;
     }
 
