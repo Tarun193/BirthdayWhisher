@@ -35,7 +35,7 @@ public class AddContactFragment: Fragment(){
     private lateinit var name: String;
     private lateinit var phone: String;
     private lateinit var wish: String;
-    private lateinit var DOB: String;
+    private lateinit var DateOfBirth: String;
 
     private lateinit var spinner: Spinner;
 
@@ -121,7 +121,7 @@ public class AddContactFragment: Fragment(){
             name = binding.editName.text.toString();
             phone = binding.editPhone.text.toString();
             wish = binding.editMessage.text.toString();
-            DOB = binding.textDate.text.toString();
+            DateOfBirth = binding.textDate.text.toString();
 
             if(checkAllInputs()){
                 Log.i("AddContact", "All set")
@@ -141,7 +141,7 @@ public class AddContactFragment: Fragment(){
             "phone" to phone,
             "relationType" to relationType,
             "message" to wish,
-            "DOB" to DOB,
+            "DOB" to DateOfBirth,
             "user" to auth.currentUser?.uid!!
         )
 
@@ -177,7 +177,7 @@ public class AddContactFragment: Fragment(){
             result = false;
         }
 
-        if(DOB == "Select Date"){
+        if(DateOfBirth == "Select Date"){
             Toast.makeText(act, "Please select the date of birth", Toast.LENGTH_SHORT).show();
             result = false;
         }
