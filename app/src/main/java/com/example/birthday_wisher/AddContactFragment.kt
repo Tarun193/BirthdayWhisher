@@ -11,10 +11,14 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import com.example.birthday_wisher.databinding.FragmentAddContactBinding
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.firestore
+
+
 
 public class AddContactFragment: Fragment(){
     private var _binding: FragmentAddContactBinding? = null;
@@ -47,6 +51,8 @@ public class AddContactFragment: Fragment(){
         super.onViewCreated(view, savedInstanceState);
 
         db = Firebase.firestore;
+        auth = Firebase.auth;
+
         val spinner: Spinner = binding.relationSpinner;
         // Create an ArrayAdapter using the string array and a default spinner layout.
         ArrayAdapter.createFromResource(
@@ -78,11 +84,34 @@ public class AddContactFragment: Fragment(){
             phone = binding.editPhone.text.toString();
             wish = binding.editMessage.text.toString();
 
-//            addContactToFirebase();
+            addContactToFirebase();
 
         }
 
     }
 
+    private fun addContactToFirebase(){
+        val contactMap = hashMapOf(
+            "name" to name,
+            "phone" to phone,
+            "relationType" to relationType,
+            "message" to wish,
+            "user" to auth.currentUser?.uid!!
+        )
+
+        Log.i("Firebase", "${auth.currentUser?.uid}")
+        db.collection("Contacts").add(contactMap).addOnSuccessListener {docRef ->
+            val userRef = db.collection("Users").document(auth.currentUser!!.uid)
+            userRef.update("contacts", FieldValue.arrayUnion(docRef))
+                .addOnSuccessListener {
+                    Log.i("Firebase", "Contact reference added to user successfully")
+                }
+                .addOnFailureListener { e ->
+                    Log.i("Firebase", "Error adding contact reference to user", e)
+                }
+        }.addOnFailureListener{
+            Log.i("Firebase","Error occurred in contacts" ,it);
+        }
+    }
 
 }

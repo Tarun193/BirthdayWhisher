@@ -15,7 +15,22 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center|start"
+            android:includeFontPadding="false"
+            android:paddingStart="20dp"
+            android:text="Add Contact"
+            android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
+            android:textSize="34sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="369dp"
