@@ -46,6 +46,7 @@ class LoginFragment: Fragment(){
             if(result.resultCode == Activity.RESULT_OK){
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data);
                 handleSignInResult(task);
+                changeActivity();
             }else {
                 // Handle cancellation or error
                 if (result.data != null) {
@@ -72,6 +73,11 @@ class LoginFragment: Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if(auth.currentUser != null){
+            changeActivity();
+        }
+
         binding.SignupLink.setOnClickListener{
             findNavController().navigate(R.id.action_fragment_login_to_fragment_signup);
         }
@@ -147,12 +153,6 @@ class LoginFragment: Fragment(){
                     Log.i("Firebase","${auth.currentUser?.uid} ${auth.currentUser?.email}")
 //                    findNavController().navigate(R.id.action_signupFragment_to_nextFragment)
                     addUserToCollection(auth.currentUser, auth.currentUser?.displayName);
-                    activity?.let{act ->
-                        if(act is Activity){
-                            var intent = Intent(act, activity_home::class.java);
-                            startActivity(intent);
-                        }
-                    }
                     Toast.makeText(activity, "Login done!!", Toast.LENGTH_SHORT).show();
                 } else {
                     // Sign-in failure, display a message to the user
@@ -193,6 +193,15 @@ class LoginFragment: Fragment(){
                             Log.w("Firebase", "Error writing document", e)
                         }
                 }
+            }
+        }
+    }
+
+    private fun changeActivity(){
+        activity?.let{act ->
+            if(act is Activity){
+                var intent = Intent(act, activity_home::class.java);
+                startActivity(intent);
             }
         }
     }

@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.birthday_wisher.databinding.FragmentAddContactBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -124,11 +125,10 @@ public class AddContactFragment: Fragment(){
             DateOfBirth = binding.textDate.text.toString();
 
             if(checkAllInputs()){
-                Log.i("AddContact", "All set")
                 addContactToFirebase();
-                Log.i("AddContact", "Contact Created")
                 clearInputs();
-                Log.i("AddContact", "Input resets")
+                findNavController().navigate(R.id.action_addContactFragment_to_homeFragment);
+
             }
 
         }

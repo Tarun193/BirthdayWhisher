@@ -80,7 +80,6 @@ class SignupFragment : Fragment() {
         auth = Firebase.auth;
         db = Firebase.firestore
 
-
         callbackManager = CallbackManager.Factory.create()
         var buttonFacebookLogin: LoginButton = binding.Facebook;
         buttonFacebookLogin.registerCallback(
@@ -101,19 +100,16 @@ class SignupFragment : Fragment() {
             },
         )
 
-//        if(auth.currentUser !== null){
-//            activity?.let{act ->
-//                if(act is Activity){
-//                    var intent = Intent(act, activity_home::class.java);
-//                    startActivity(intent);
-//                }
-//            }
-//        }
         return binding.root;
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState);
+
+        if(auth.currentUser != null){
+            changeActivity();
+        }
+
         binding.LoginLink.setOnClickListener{
             findNavController().navigate(R.id.action_fragment_signup_to_fragment_login);
         }
@@ -316,6 +312,15 @@ class SignupFragment : Fragment() {
     private fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         googleSignInLauncher.launch(signInIntent)
+    }
+
+    private fun changeActivity(){
+        activity?.let{act ->
+            if(act is Activity){
+                var intent = Intent(act, activity_home::class.java);
+                startActivity(intent);
+            }
+        }
     }
 
 }
