@@ -13,12 +13,13 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.birthday_wisher.databinding.FragmentAddContactBinding
+import com.example.birthday_wisher.viewModles.ContactsViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
@@ -40,6 +41,7 @@ public class AddContactFragment: Fragment(){
 
     private lateinit var spinner: Spinner;
 
+    private val contactsViewModel by activityViewModels<ContactsViewModel>();
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -125,40 +127,22 @@ public class AddContactFragment: Fragment(){
             DateOfBirth = binding.textDate.text.toString();
 
             if(checkAllInputs()){
-                addContactToFirebase();
+                contactsViewModel.addContact(hashMapOf(
+                    "name" to name,
+                    "phone" to phone,
+                    "relationType" to relationType,
+                    "message" to wish,
+                    "DOB" to DateOfBirth,
+                    "user" to auth.currentUser?.uid!!
+                )
+                )
                 clearInputs();
                 findNavController().navigate(R.id.action_addContactFragment_to_homeFragment);
-
             }
-
         }
 
     }
 
-    private fun addContactToFirebase(){
-        val contactMap = hashMapOf(
-            "name" to name,
-            "phone" to phone,
-            "relationType" to relationType,
-            "message" to wish,
-            "DOB" to DateOfBirth,
-            "user" to auth.currentUser?.uid!!
-        )
-
-        Log.i("Firebase", "${auth.currentUser?.uid}")
-        db.collection("Contacts").add(contactMap).addOnSuccessListener {docRef ->
-            val userRef = db.collection("Users").document(auth.currentUser!!.uid)
-            userRef.update("contacts", FieldValue.arrayUnion(docRef))
-                .addOnSuccessListener {
-                    Log.i("Firebase", "Contact reference added to user successfully")
-                }
-                .addOnFailureListener { e ->
-                    Log.i("Firebase", "Error adding contact reference to user", e)
-                }
-        }.addOnFailureListener{
-            Log.i("Firebase","Error occurred in contacts" ,it);
-        }
-    }
 
     private fun checkAllInputs(): Boolean{
         var result = true;

@@ -35,7 +35,7 @@ class HomeFragment: Fragment() {
 
     private lateinit var contacts:List<Map<String, Any>>;
 
-    private lateinit var contactsViewModel: ContactsViewModel;
+    private val contactsViewModel by activityViewModels<ContactsViewModel>();
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,8 +54,9 @@ class HomeFragment: Fragment() {
         }
 
         binding.composeView.setContent {
-            contactsViewModel = activityViewModels<ContactsViewModel>().value;
-            contactsViewModel.fetchContacts();
+            if(contactsViewModel.contacts.isEmpty()){
+                contactsViewModel.fetchContacts();
+            }
             contacts = contactsViewModel.contacts;
             updateUI(contacts);
         }

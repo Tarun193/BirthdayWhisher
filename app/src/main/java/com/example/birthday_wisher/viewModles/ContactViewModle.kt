@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 
@@ -28,7 +29,7 @@ class ContactsViewModel : ViewModel() {
                         if(document != null){
                             val contactsData = document.data?.get("contacts") as List<DocumentReference>;
                             contacts.clear();
-
+                            Log.i("LiveData", "fetching contacts");
                             for (contact in contactsData) {
                                 contact.get().addOnSuccessListener { document ->
                                     if (document != null) {
@@ -50,6 +51,26 @@ class ContactsViewModel : ViewModel() {
                         Log.i("Firebase", "An error occurred", it);
                     }
 
+                }
+            }
+        }
+
+        fun addContact(contact: Map<String, Any>) {
+            viewModelScope.launch {
+                Log.i("Firebase", "${auth.currentUser?.uid}")
+                db.collection("Contacts").add(contact).addOnSuccessListener {docRef ->
+                    val userRef = db.collection("Users").document(auth.currentUser!!.uid)
+                    userRef.update("contacts", FieldValue.arrayUnion(docRef))
+                        .addOnSuccessListener {
+                            Log.i("Firebase", "Contact reference added to user successfully");
+                            contacts.add(contact);
+                            Log.i("LiveData", contacts.size.toString());
+                        }
+                        .addOnFailureListener { e ->
+                            Log.i("Firebase", "Error adding contact reference to user", e)
+                        }
+                }.addOnFailureListener{
+                    Log.i("Firebase","Error occurred in contacts" ,it);
                 }
             }
         }
