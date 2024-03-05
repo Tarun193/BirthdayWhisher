@@ -38,7 +38,6 @@ class HomeFragment: Fragment() {
     private val binding get() = _binding!!;
     private lateinit var auth: FirebaseAuth;
 
-    private lateinit var contacts:List<Map<String, Any>>;
 
     private val contactsViewModel by activityViewModels<ContactsViewModel>();
 
@@ -76,7 +75,7 @@ class HomeFragment: Fragment() {
         }
 
         binding.composeView.setContent {
-            contacts = contactsViewModel.contacts;
+            val contacts = contactsViewModel.contacts;
             updateUI(contacts);
         }
 
@@ -90,7 +89,7 @@ class HomeFragment: Fragment() {
 
     @SuppressLint("SuspiciousIndentation")
     @Composable
-    fun CustomListItem(contacts:List<Map<String, Any>>) {
+    fun CustomListItem(contacts: List<Map<String, Any>>) {
         val scrollState = rememberScrollState();
         Column(modifier = Modifier.verticalScroll(scrollState) ){
             for(contact in contacts){

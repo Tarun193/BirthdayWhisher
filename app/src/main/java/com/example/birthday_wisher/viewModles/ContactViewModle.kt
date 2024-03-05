@@ -1,5 +1,6 @@
 package com.example.birthday_wisher.viewModles
 
+import android.icu.text.SimpleDateFormat
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
@@ -9,7 +10,12 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.util.Calendar
+import java.util.Locale
 
 
 class ContactsViewModel : ViewModel() {
@@ -25,41 +31,34 @@ class ContactsViewModel : ViewModel() {
     }
 
     private fun fetchContacts() {
-        // Placeholder for fetch logic
         viewModelScope.launch {
-            // Simulate fetching data
-            Log.i("FirebaseTest", "${auth.currentUser?.uid}")
-            user?.uid.let { id ->
-                db.collection("Users").document(id!!).get().addOnSuccessListener { document ->
-                    if (document != null) {
-                        val contactsRaw = document.data?.get("contacts");
-                        val contactsData: List<DocumentReference> = when (contactsRaw) {
-                            is List<*> -> contactsRaw.filterIsInstance<DocumentReference>()
-                            else -> emptyList() // Handle the case where contactsRaw is not a list or is null
-                        }
-                        contacts.clear();
-                        Log.i("LiveData", "fetching contacts");
-                        for (contact in contactsData) {
-                            contact.get().addOnSuccessListener { document ->
-                                if (document != null) {
-                                    Log.i("Firebase", "document: ${document.data}");
-                                    document.data?.let {
-                                        contacts.add(it);
-                                    }
-                                } else {
-                                    Log.i("Firebase", "document: not found");
-                                }
-                            }.addOnFailureListener {
-                                Log.i("Firebase", "An error occurred", it);
+            user?.uid?.let { id ->
+                val document = db.collection("Users").document(id).get().await() // Await the document
+                if (document != null) {
+                    val contactsRaw = document.data?.get("contacts")
+                    val contactsData: List<DocumentReference> = when (contactsRaw) {
+                        is List<*> -> contactsRaw.filterIsInstance<DocumentReference>()
+                        else -> emptyList()
+                    }
+
+                    // Fetch contacts concurrently and convert them to Contact instances
+                    val fetchJobs = contactsData.map { contactRef ->
+                        async {
+                            val contactDoc = contactRef.get().await() // Await each contact document
+                            if (contactDoc.exists()) {
+                                contactDoc.data?.let { contacts.add(it) }
                             }
                         }
-                    } else {
-                        Log.i("Firebase", "document: not found");
                     }
-                }.addOnFailureListener {
-                    Log.i("Firebase", "An error occurred", it);
-                }
+                    fetchJobs.awaitAll() // Wait for all fetch operations to complete
 
+                    // Now that all contacts have been fetched, sort them based on your criteria
+                    sortContactsByMonthAndDay();
+
+                    // Use fetchedContacts as needed, now fully fetched and sorted
+                } else {
+                    Log.i("Firebase", "Document not found")
+                }
             }
         }
     }
@@ -73,7 +72,6 @@ class ContactsViewModel : ViewModel() {
                     .addOnSuccessListener {
                         Log.i("Firebase", "Contact reference added to user successfully");
                         contacts.add(contact);
-                        Log.i("LiveData", contacts.size.toString());
                     }
                     .addOnFailureListener { e ->
                         Log.i("Firebase", "Error adding contact reference to user", e)
@@ -87,4 +85,28 @@ class ContactsViewModel : ViewModel() {
     fun contactsExist(): Boolean {
         return contacts.isNotEmpty();
     }
+
+
+    private fun sortContactsByMonthAndDay() {
+        val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.US)
+
+        contacts.sortWith { a, b ->
+            // Parse the DOB strings into Date objects
+            val aDOB = dateFormat.parse(a["DOB"].toString())
+            val bDOB = dateFormat.parse(b["DOB"].toString())
+
+            // Extract month and day from aDOB and bDOB
+            val calendarA = Calendar.getInstance().apply { time = aDOB }
+            val calendarB = Calendar.getInstance().apply { time = bDOB }
+
+            // Compare first by month, then by day
+            val monthComparison = calendarA.get(Calendar.MONTH).compareTo(calendarB.get(Calendar.MONTH))
+            if (monthComparison != 0) {
+                monthComparison
+            } else {
+                calendarA.get(Calendar.DAY_OF_MONTH).compareTo(calendarB.get(Calendar.DAY_OF_MONTH))
+            }
+        }
+    }
+
 }
