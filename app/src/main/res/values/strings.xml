@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Birthday_Wisher</string>
+    <string name="app_name">Birthday Wisher</string>
     <string name="web_client_id">542162562542-cn1o47bmsg6fruig1grinpb456j8gvgg.apps.googleusercontent.com</string>
     <string name="title_activity_add_user">AddUserActivity</string>
     <string name="facebook_app_id">3626942124243237</string>

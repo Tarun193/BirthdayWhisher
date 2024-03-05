@@ -11,8 +11,11 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.birthday_wisher.databinding.FragmentLoginBinding
+import com.example.birthday_wisher.viewModles.UserViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -21,8 +24,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
@@ -35,6 +36,7 @@ class LoginFragment: Fragment(){
     private lateinit var db: FirebaseFirestore;
     private lateinit var googleSignInClient: GoogleSignInClient;
     private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
+    private val userViewModel by activityViewModels<UserViewModel>();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
@@ -46,7 +48,6 @@ class LoginFragment: Fragment(){
             if(result.resultCode == Activity.RESULT_OK){
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data);
                 handleSignInResult(task);
-                changeActivity();
             }else {
                 // Handle cancellation or error
                 if (result.data != null) {
@@ -59,6 +60,20 @@ class LoginFragment: Fragment(){
                 }
             }
 
+        }
+
+        activity?.let{act ->
+            if(act is Activity){
+                userViewModel.userId.observe(act, Observer { userId ->
+                    userId?.let {
+                        changeActivity(act);
+                    }
+                })
+            }
+        }
+
+        if(auth.currentUser != null){
+            userViewModel.setUserId(auth.currentUser?.uid);
         }
     }
 
@@ -73,10 +88,6 @@ class LoginFragment: Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if(auth.currentUser != null){
-            changeActivity();
-        }
 
         binding.SignupLink.setOnClickListener{
             findNavController().navigate(R.id.action_fragment_login_to_fragment_signup);
@@ -95,19 +106,9 @@ class LoginFragment: Fragment(){
             activity?.let { act ->
                 if (act is Activity) {
                     if(!checkEmpty()){
-                        auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(act){task ->
-                            if(task.isSuccessful){
-                                val user = auth.currentUser;
-                                Toast.makeText(act, "Logged in successfully!!", Toast.LENGTH_SHORT).show();
-                                clearText();
-                                var intent = Intent(act, activity_home::class.java);
-                                startActivity(intent);
-                            }
-                            else{
-                                Log.i("Firebase", "Some Error occurred", task.exception)
-                            }
-                        }
+                        userViewModel.loginWithEmailAndPassword(email, password, act);
+                        Toast.makeText(act, "Logged in successfully!!", Toast.LENGTH_SHORT).show();
+                        clearText();
                     }
                 }
             }
@@ -137,28 +138,11 @@ class LoginFragment: Fragment(){
         try {
             val account = completedTask.getResult(ApiException::class.java)
             // You can now use the account's information to perform further authentication steps
-            firebaseAuthWithGoogle(account.idToken!!)
+            userViewModel.signInWithGoogleAccount(account.idToken!!, activity as Activity);
         } catch (e: ApiException) {
             // Handle sign-in failure
             Log.w("Firebase", "Google sign in failed", e)
         }
-    }
-
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    Log.i("Firebase","${auth.currentUser?.uid} ${auth.currentUser?.email}")
-//                    findNavController().navigate(R.id.action_signupFragment_to_nextFragment)
-                    addUserToCollection(auth.currentUser, auth.currentUser?.displayName);
-                    Toast.makeText(activity, "Login done!!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Sign-in failure, display a message to the user
-                    Log.w("Firebase", "signInWithCredential:failure", task.exception)
-                }
-            }
     }
 
 
@@ -176,33 +160,10 @@ class LoginFragment: Fragment(){
         googleSignInLauncher.launch(signInIntent)
     }
 
-    private fun addUserToCollection(user: FirebaseUser?, name: String?) {
-//        Now adding that user to User collection
-        val userMap = hashMapOf(
-            "email" to user?.email,
-            "name" to name,
-        )
-        user?.uid?.let {
-            val docRef =  db.collection("Users").document(it);
-            docRef.get().addOnSuccessListener { doc ->
-                if(!doc.exists()){
-                    docRef.set(userMap)
-                        .addOnSuccessListener {
-                            Log.d("Firebase", "successfully account created");
-                        }.addOnFailureListener { e ->
-                            Log.w("Firebase", "Error writing document", e)
-                        }
-                }
-            }
-        }
-    }
 
-    private fun changeActivity(){
-        activity?.let{act ->
-            if(act is Activity){
-                var intent = Intent(act, activity_home::class.java);
-                startActivity(intent);
-            }
-        }
+    private fun changeActivity(act: Activity){
+        val intent  = Intent(act, activity_home::class.java);
+        startActivity(intent);
+        act.finish();
     }
 }

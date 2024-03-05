@@ -2,6 +2,7 @@ package com.example.birthday_wisher;
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
@@ -16,13 +17,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.birthday_wisher.databinding.FragmentAddContactBinding
+import com.example.birthday_wisher.ui.components.MyAppBar
 import com.example.birthday_wisher.viewModles.ContactsViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
-
 
 
 public class AddContactFragment: Fragment(){
@@ -48,6 +48,7 @@ public class AddContactFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAddContactBinding.inflate(inflater, container, false);
+        auth = Firebase.auth;
         activity?.let{
             if(it is Activity){
                 act = it;
@@ -59,8 +60,15 @@ public class AddContactFragment: Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState);
 
-        db = Firebase.firestore;
-        auth = Firebase.auth;
+
+        binding.TopBar.setContent {
+            MyAppBar("Add Contact", logoutClick =  {
+                auth.signOut();
+                val intent  = Intent(act, activity_signup_login::class.java);
+                startActivity(intent);
+                act.finish();
+            });
+        }
 
         spinner =  binding.relationSpinner;
         // Create an ArrayAdapter using the string array and a default spinner layout.

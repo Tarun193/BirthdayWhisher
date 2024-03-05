@@ -1,5 +1,8 @@
 package com.example.birthday_wisher
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,16 +25,18 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.wear.compose.material.ContentAlpha
 import com.example.birthday_wisher.databinding.FragmentHomeBinding
+import com.example.birthday_wisher.ui.components.MyAppBar
 import com.example.birthday_wisher.viewModles.ContactsViewModel
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.auth
 
 class HomeFragment: Fragment() {
     private var _binding: FragmentHomeBinding? = null;
+    private lateinit var act: Activity;
 
     private val binding get() = _binding!!;
     private lateinit var auth: FirebaseAuth;
-    private lateinit var db: FirebaseFirestore;
 
     private lateinit var contacts:List<Map<String, Any>>;
 
@@ -43,25 +48,39 @@ class HomeFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false);
+        auth = Firebase.auth;
+        activity?.let{
+            if(it is Activity){
+                act = it;
+            }
+        }
+
         return binding.root;
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState);
+
         binding.button2.setOnClickListener{
             findNavController().navigate(R.id.action_homeFragment_to_addContactFragment);
         }
 
+        binding.TopBar.setContent {
+            MyAppBar("Home", logoutClick =  {
+                auth.signOut();
+                val intent  = Intent(act, activity_signup_login::class.java);
+                startActivity(intent);
+                act.finish();
+            })
+        }
+
         binding.composeView.setContent {
-            if(contactsViewModel.contacts.isEmpty()){
-                contactsViewModel.fetchContacts();
-            }
             contacts = contactsViewModel.contacts;
             updateUI(contacts);
         }
 
-}
+    }
     @Composable
     fun updateUI(contacts: List<Map<String, Any>>) {
         CustomListItem(contacts);
@@ -69,11 +88,12 @@ class HomeFragment: Fragment() {
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     @Composable
     fun CustomListItem(contacts:List<Map<String, Any>>) {
         val scrollState = rememberScrollState();
-            Column(modifier = Modifier.verticalScroll(scrollState) ){
-                for(contact in contacts){
+        Column(modifier = Modifier.verticalScroll(scrollState) ){
+            for(contact in contacts){
                 ListItem(
                     headlineContent = { Text(contact.get("name").toString()) },
                     supportingContent = { Text(DOBFormatter(contact.get("DOB").toString())) },
