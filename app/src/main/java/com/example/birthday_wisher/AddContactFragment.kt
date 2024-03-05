@@ -2,7 +2,6 @@ package com.example.birthday_wisher;
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.birthday_wisher.databinding.FragmentAddContactBinding
 import com.example.birthday_wisher.ui.components.MyAppBar
 import com.example.birthday_wisher.viewModles.ContactsViewModel
+import com.example.birthday_wisher.viewModles.UserViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -42,6 +42,7 @@ public class AddContactFragment: Fragment(){
     private lateinit var spinner: Spinner;
 
     private val contactsViewModel by activityViewModels<ContactsViewModel>();
+    private val userViewModel by activityViewModels<UserViewModel>();
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,18 +55,18 @@ public class AddContactFragment: Fragment(){
                 act = it;
             }
         }
+
         return binding.root;
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState);
 
 
         binding.TopBar.setContent {
-            MyAppBar("Add Contact", logoutClick =  {
-                auth.signOut();
-                val intent  = Intent(act, activity_signup_login::class.java);
-                startActivity(intent);
+            MyAppBar("Add Contact", isLoggedIn = true, logoutClick = {
+                userViewModel.Logout();
                 act.finish();
             });
         }

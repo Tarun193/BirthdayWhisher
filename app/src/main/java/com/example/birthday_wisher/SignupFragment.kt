@@ -12,7 +12,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.birthday_wisher.databinding.FragmentSignupBinding
 import com.example.birthday_wisher.viewModles.UserViewModel
@@ -68,19 +67,6 @@ class SignupFragment : Fragment() {
                     }
                 }
             }
-
-        activity?.let{act ->
-            if(act is Activity){
-                userViewModel.userId.observe(act, Observer { userId ->
-                    userId?.let {
-                        var intent = Intent(act, activity_home::class.java);
-                        startActivity(intent);
-                        act.finish();
-                    }
-                })
-            }
-        }
-
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

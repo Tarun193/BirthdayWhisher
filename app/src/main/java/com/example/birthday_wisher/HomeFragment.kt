@@ -1,7 +1,6 @@
 package com.example.birthday_wisher
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,7 @@ import com.example.birthday_wisher.databinding.FragmentHomeBinding
 import com.example.birthday_wisher.ui.components.CustomListItem
 import com.example.birthday_wisher.ui.components.MyAppBar
 import com.example.birthday_wisher.viewModles.ContactsViewModel
+import com.example.birthday_wisher.viewModles.UserViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -26,6 +26,7 @@ class HomeFragment: Fragment() {
 
 
     private val contactsViewModel by activityViewModels<ContactsViewModel>();
+    private val userViewModel by activityViewModels<UserViewModel>();
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,12 +50,9 @@ class HomeFragment: Fragment() {
 
 
         binding.TopBar.setContent {
-            MyAppBar("Home", logoutClick =  {
-                auth.signOut();
-                val intent  = Intent(act, activity_signup_login::class.java);
-                startActivity(intent);
-                act.finish();
-            })
+            MyAppBar("Home", isLoggedIn = true, logoutClick = {
+                userViewModel.Logout();
+            });
         }
 
         binding.composeView.setContent {
@@ -69,4 +67,5 @@ class HomeFragment: Fragment() {
         CustomListItem(contacts);
 
     }
+
 }

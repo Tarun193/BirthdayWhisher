@@ -19,19 +19,23 @@ import androidx.compose.ui.text.style.TextOverflow
 @Composable
 fun MyAppBar(
     title: String,
-    logoutClick: () -> Unit
+    logoutClick: () -> Unit = {},
+    isLoggedIn: Boolean = false,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     CenterAlignedTopAppBar(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         title = { Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-        actions ={
-            IconButton(onClick = logoutClick) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                    contentDescription = "Localized description"
-                )
+        actions =
+        {
+            if (isLoggedIn) {
+                IconButton(onClick = logoutClick) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                        contentDescription = "Localized description"
+                    )
+                }
             }
         },
         scrollBehavior = scrollBehavior,

@@ -12,7 +12,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.birthday_wisher.databinding.FragmentLoginBinding
 import com.example.birthday_wisher.viewModles.UserViewModel
@@ -60,20 +59,6 @@ class LoginFragment: Fragment(){
                 }
             }
 
-        }
-
-        activity?.let{act ->
-            if(act is Activity){
-                userViewModel.userId.observe(act, Observer { userId ->
-                    userId?.let {
-                        changeActivity(act);
-                    }
-                })
-            }
-        }
-
-        if(auth.currentUser != null){
-            userViewModel.setUserId(auth.currentUser?.uid);
         }
     }
 
@@ -158,12 +143,5 @@ class LoginFragment: Fragment(){
     private fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         googleSignInLauncher.launch(signInIntent)
-    }
-
-
-    private fun changeActivity(act: Activity){
-        val intent  = Intent(act, activity_home::class.java);
-        startActivity(intent);
-        act.finish();
     }
 }
