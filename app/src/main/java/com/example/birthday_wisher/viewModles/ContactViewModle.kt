@@ -72,6 +72,7 @@ class ContactsViewModel : ViewModel() {
                     .addOnSuccessListener {
                         Log.i("Firebase", "Contact reference added to user successfully");
                         contacts.add(contact);
+                        sortContactsByMonthAndDay();
                     }
                     .addOnFailureListener { e ->
                         Log.i("Firebase", "Error adding contact reference to user", e)

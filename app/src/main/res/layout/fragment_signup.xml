@@ -6,30 +6,16 @@
     android:layout_height="match_parent"
     android:id="@+id/fragment_signup"
     >
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:background="#009688"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="73dp"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center|start"
-            android:includeFontPadding="false"
-            android:paddingStart="20dp"
-            android:text="SignUp"
-            android:textAlignment="textStart"
-            android:textColor="#FFFFFF"
-            android:textSize="34sp" />
-    </LinearLayout>
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/topBar"
+        background="#000000"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="369dp"
@@ -40,10 +26,9 @@
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.42"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.19">
+        app:layout_constraintTop_toBottomOf="@+id/topBar"
+        app:layout_constraintVertical_bias="0.265">
 
         <EditText
             android:id="@+id/editName"
@@ -123,8 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
     </LinearLayout>
 

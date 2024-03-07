@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.birthday_wisher.databinding.FragmentLoginBinding
+import com.example.birthday_wisher.ui.components.MyAppBar
 import com.example.birthday_wisher.viewModles.UserViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -76,6 +77,10 @@ class LoginFragment: Fragment(){
 
         binding.SignupLink.setOnClickListener{
             findNavController().navigate(R.id.action_fragment_login_to_fragment_signup);
+        }
+
+        binding.topBar.setContent {
+            MyAppBar("Login", isLoggedIn = false, logoutClick = {});
         }
 
 

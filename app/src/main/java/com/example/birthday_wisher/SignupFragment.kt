@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.birthday_wisher.databinding.FragmentSignupBinding
+import com.example.birthday_wisher.ui.components.MyAppBar
 import com.example.birthday_wisher.viewModles.UserViewModel
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -105,6 +106,10 @@ class SignupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState);
+
+        binding.topBar.setContent {
+            MyAppBar("Sign Up", isLoggedIn = false, logoutClick = {});
+        }
 
         if(auth.currentUser != null){
             userViewModel.setUserId(auth.currentUser?.uid);
