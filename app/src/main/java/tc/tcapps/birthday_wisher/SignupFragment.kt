@@ -13,15 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import tc.tcapps.birthday_wisher.databinding.FragmentSignupBinding
-import tc.tcapps.birthday_wisher.ui.components.MyAppBar
-import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -34,6 +27,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import tc.tcapps.birthday_wisher.databinding.FragmentSignupBinding
+import tc.tcapps.birthday_wisher.ui.components.MyAppBar
+import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 
 
 class SignupFragment : Fragment() {
@@ -69,37 +65,11 @@ class SignupFragment : Fragment() {
                 }
             }
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // Pass the activity result back to the Facebook SDK
-        callbackManager.onActivityResult(requestCode, resultCode, data)
-    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSignupBinding.inflate(inflater, container, false);
         //        Grabbing firebase services instance
         auth = Firebase.auth;
         db = Firebase.firestore
-
-        callbackManager = CallbackManager.Factory.create()
-        var buttonFacebookLogin: LoginButton = binding.Facebook;
-        buttonFacebookLogin.registerCallback(
-            callbackManager,
-            object : FacebookCallback<LoginResult> {
-                override fun onSuccess(loginResult: LoginResult) {
-                    Log.d("Facebook", "facebook:onSuccess:$loginResult")
-                    handleFacebookAccessToken(loginResult.accessToken)
-                }
-
-                override fun onCancel() {
-                    Log.d("Facebook", "facebook:onCancel")
-                }
-
-                override fun onError(error: FacebookException) {
-                    Log.d("Facebook", "facebook:onError", error)
-                }
-            },
-        )
 
         return binding.root;
     }

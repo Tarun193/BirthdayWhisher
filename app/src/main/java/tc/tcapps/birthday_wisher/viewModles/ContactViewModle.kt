@@ -44,11 +44,15 @@ class ContactsViewModel : ViewModel() {
                     }
 
                     // Fetch contacts concurrently and convert them to Contact instances
+                    contacts.clear();
                     val fetchJobs = contactsData.map { contactRef ->
                         async {
                             val contactDoc = contactRef.get().await() // Await each contact document
                             if (contactDoc.exists()) {
-                                contactDoc.data?.let { contacts.add(it) }
+                                contactDoc.data?.let {
+                                    it["id"] = contactDoc.id;
+                                    contacts.add(it)
+                                }
                             }
                         }
                     }
@@ -73,7 +77,7 @@ class ContactsViewModel : ViewModel() {
                 userRef.update("contacts", FieldValue.arrayUnion(docRef))
                     .addOnSuccessListener {
                         Log.i("Firebase", "Contact reference added to user successfully");
-                        contacts.add(contact);
+                        fetchContacts();
                         sortContactsByMonthAndDay();
                     }
                     .addOnFailureListener { e ->
@@ -114,5 +118,31 @@ class ContactsViewModel : ViewModel() {
 
     fun setContactTobeUpdated(contact: Map<String, Any>) {
         contactTobeUpdated = contact;
+    }
+
+    fun updateContact(updateData: Map<String, Any>){
+        db.collection("Contacts")
+            .document(contactTobeUpdated?.get("id").toString())
+            .update(updateData).addOnSuccessListener {
+                Log.i("Updated", "DataUpdated")
+                fetchContacts();
+                sortContactsByMonthAndDay();
+                contactTobeUpdated = null;
+            }
+    }
+
+    fun deleteContact(){
+        val contactRef =db.collection("Contacts").document(contactTobeUpdated?.get("id").toString());
+        contactRef.delete().addOnSuccessListener {
+                db.collection("Users")
+                    .document(user?.uid!!)
+                    .update("contacts", FieldValue.arrayRemove(contactRef)).addOnSuccessListener {
+                        Log.i("Updated", "DataDeleted")
+                        fetchContacts();
+                        sortContactsByMonthAndDay();
+                        contactTobeUpdated = null;
+                    }
+
+            }
     }
 }

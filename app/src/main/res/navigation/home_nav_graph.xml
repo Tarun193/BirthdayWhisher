@@ -23,6 +23,9 @@
         android:name="tc.tcapps.birthday_wisher.UpdateDeleteFragment"
         android:label="updateDeleteFragment"
         tools:layout="@layout/fragment_update_delete">
+        <action
+            android:id="@+id/action_updateDeleteFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
 

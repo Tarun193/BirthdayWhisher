@@ -4,13 +4,17 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import tc.tcapps.birthday_wisher.databinding.FragmentUpdateDeleteBinding
 import tc.tcapps.birthday_wisher.ui.components.MyAppBar
 import tc.tcapps.birthday_wisher.viewModles.ContactsViewModel
@@ -26,6 +30,14 @@ class UpdateDeleteFragment: Fragment()  {
     private val contactsViewModel by activityViewModels<ContactsViewModel>();
     private val userViewModel by activityViewModels<UserViewModel>();
     private lateinit var contact: Map<String, Any>
+
+
+    private lateinit var relationType: String;
+    private lateinit var name: String;
+    private lateinit var phone: String;
+    private lateinit var wish: String;
+    private lateinit var DateOfBirth: String;
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,6 +71,43 @@ class UpdateDeleteFragment: Fragment()  {
             showCalander();
         }
 
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                // An item is selected. You can retrieve the selected item using
+                relationType = parent.getItemAtPosition(pos).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                Log.i("Spinner","Chill");
+            }
+
+        }
+
+        binding.updateContact.setOnClickListener{
+            name = binding.editName.text.toString();
+            DateOfBirth = binding.textDate.text.toString();
+            wish = binding.editMessage.text.toString();
+            phone = binding.editPhone.text.toString();
+
+            if(checkAllInputs()){
+                contactsViewModel.updateContact(hashMapOf(
+                    "name" to name,
+                    "phone" to phone,
+                    "relationType" to relationType,
+                    "message" to wish,
+                    "DOB" to DateOfBirth,
+                    "user" to userViewModel.userId.value.toString()
+                )
+                )
+                findNavController().navigate(R.id.action_updateDeleteFragment_to_homeFragment)
+            }
+        }
+
+        binding.deleteContact.setOnClickListener{
+            contactsViewModel.deleteContact();
+            findNavController().navigate(R.id.action_updateDeleteFragment_to_homeFragment)
+        }
+
     }
 
     private fun setSpinner(){
@@ -73,6 +122,8 @@ class UpdateDeleteFragment: Fragment()  {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             // Apply the adapter to the spinner.
             spinner.adapter = adapter
+            val defultPos = adapter.getPosition(contact.get("relationType").toString());
+            spinner.setSelection(defultPos)
         }
     }
 
@@ -107,5 +158,30 @@ class UpdateDeleteFragment: Fragment()  {
         // at last we are calling show
         // to display our date picker dialog.
         datePickerDialog.show()
+    }
+
+    private fun checkAllInputs(): Boolean{
+        var result = true;
+        if(binding.editName.text.toString().trim().isEmpty()){
+            binding.editName.error = "Name is required";
+            result = false;
+        }
+
+        if(binding.editPhone.text.toString().trim().isEmpty()){
+            binding.editName.error = "Phone number is required";
+            result = false;
+        }
+
+        if(relationType == "Relationship Type"){
+            Toast.makeText(act, "Please select the relationship type", Toast.LENGTH_SHORT).show();
+            result = false;
+        }
+
+        if(DateOfBirth == "Select Date"){
+            Toast.makeText(act, "Please select the date of birth", Toast.LENGTH_SHORT).show();
+            result = false;
+        }
+
+        return result;
     }
 }

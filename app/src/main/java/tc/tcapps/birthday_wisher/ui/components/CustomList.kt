@@ -27,37 +27,37 @@ import tc.tcapps.birthday_wisher.viewModles.ContactsViewModel
 @Composable
 fun CustomListItem(contacts: List<Map<String, Any>>, onClick: () -> Unit, contactsViewModel: ContactsViewModel ) {
     val scrollState = rememberScrollState();
-    Column(modifier = Modifier.verticalScroll(scrollState) ){
-        for(contact in contacts) {
-            Card(
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                modifier = Modifier
-                    .padding(8.dp) // Provide some padding around the Card
-            ) {
-                ListItem(
-                    headlineContent = { Text(contact.get("name").toString()) },
-                    supportingContent = { Text(DOBFormatter(contact.get("DOB").toString())) },
-                    leadingContent = {
-                        Icon(
-                            Icons.Filled.AccountCircle,
-                            contentDescription = "Localized description",
-                            tint = Color.Black,
-                        )
-                    },
-                    trailingContent = {
-                        Icon(
-                            Icons.Filled.Edit, // This icon represents a right-pointing arrow
-                            contentDescription = "Go to details",
-                            modifier = Modifier.clickable {
-                                contactsViewModel.setContactTobeUpdated(contact);
-                                onClick();
-                            }
-                        )
-                    },
-                    colors = customListItemColors()
-                )
+    Column(modifier = Modifier.verticalScroll(scrollState).padding(bottom = 150.dp) ) {
+            for (contact in contacts) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    modifier = Modifier
+                        .padding(8.dp) // Provide some padding around the Card
+                ) {
+                    ListItem(
+                        headlineContent = { Text(contact.get("name").toString()) },
+                        supportingContent = { Text(DOBFormatter(contact.get("DOB").toString())) },
+                        leadingContent = {
+                            Icon(
+                                Icons.Filled.AccountCircle,
+                                contentDescription = "Localized description",
+                                tint = Color.Black,
+                            )
+                        },
+                        trailingContent = {
+                            Icon(
+                                Icons.Filled.Edit, // This icon represents a right-pointing arrow
+                                contentDescription = "Go to details",
+                                modifier = Modifier.clickable {
+                                    contactsViewModel.setContactTobeUpdated(contact);
+                                    onClick();
+                                }
+                            )
+                        },
+                        colors = customListItemColors()
+                    )
+                }
             }
-        }
     }
 
 }
