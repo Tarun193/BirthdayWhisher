@@ -1,4 +1,4 @@
-package com.example.birthday_wisher
+package tc.tcapps.birthday_wisher
 
 import android.app.Activity
 import android.content.Intent
@@ -13,9 +13,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.birthday_wisher.databinding.FragmentSignupBinding
-import com.example.birthday_wisher.ui.components.MyAppBar
-import com.example.birthday_wisher.viewModles.UserViewModel
+import tc.tcapps.birthday_wisher.databinding.FragmentSignupBinding
+import tc.tcapps.birthday_wisher.ui.components.MyAppBar
+import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback

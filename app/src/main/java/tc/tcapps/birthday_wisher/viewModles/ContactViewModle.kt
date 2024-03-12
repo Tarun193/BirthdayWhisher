@@ -1,4 +1,4 @@
-package com.example.birthday_wisher.viewModles
+package tc.tcapps.birthday_wisher.viewModles
 
 import android.icu.text.SimpleDateFormat
 import android.util.Log
@@ -25,6 +25,8 @@ class ContactsViewModel : ViewModel() {
     private var auth = Firebase.auth;
     private var db = Firebase.firestore;
     var user = auth.currentUser;
+    var contactTobeUpdated: Map<String, Any>? = null
+    private set
 
     init{
         fetchContacts();
@@ -110,4 +112,7 @@ class ContactsViewModel : ViewModel() {
         }
     }
 
+    fun setContactTobeUpdated(contact: Map<String, Any>) {
+        contactTobeUpdated = contact;
+    }
 }

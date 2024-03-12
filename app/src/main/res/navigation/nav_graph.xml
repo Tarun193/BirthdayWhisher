@@ -7,7 +7,7 @@
     >
     <fragment
         android:id="@+id/fragment_signup"
-        android:name="com.example.birthday_wisher.SignupFragment"
+        android:name="tc.tcapps.birthday_wisher.SignupFragment"
         tools:layout="@layout/fragment_signup"
         >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_login"
-        android:name="com.example.birthday_wisher.LoginFragment"
+        android:name="tc.tcapps.birthday_wisher.LoginFragment"
         tools:layout="@layout/fragment_login"
         >
         <action

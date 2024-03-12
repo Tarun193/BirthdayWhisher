@@ -1,4 +1,4 @@
-package com.example.birthday_wisher;
+package tc.tcapps.birthday_wisher;
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -15,14 +15,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.birthday_wisher.databinding.FragmentAddContactBinding
-import com.example.birthday_wisher.ui.components.MyAppBar
-import com.example.birthday_wisher.viewModles.ContactsViewModel
-import com.example.birthday_wisher.viewModles.UserViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import tc.tcapps.birthday_wisher.databinding.FragmentAddContactBinding
+import tc.tcapps.birthday_wisher.ui.components.MyAppBar
+import tc.tcapps.birthday_wisher.viewModles.ContactsViewModel
+import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 
 
 public class AddContactFragment: Fragment(){

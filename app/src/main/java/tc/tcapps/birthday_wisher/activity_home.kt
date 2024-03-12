@@ -1,4 +1,4 @@
-package com.example.birthday_wisher
+package tc.tcapps.birthday_wisher
 
 import android.app.Activity
 import android.content.Intent
@@ -7,9 +7,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
-import com.example.birthday_wisher.databinding.ActivityHomeBinding
-import com.example.birthday_wisher.ui.components.BottomAppBar
-import com.example.birthday_wisher.viewModles.UserViewModel
+import tc.tcapps.birthday_wisher.databinding.ActivityHomeBinding
+import tc.tcapps.birthday_wisher.ui.components.BottomAppBar
+import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 
 class activity_home: AppCompatActivity() {
 

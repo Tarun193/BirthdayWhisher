@@ -1,4 +1,4 @@
-package com.example.birthday_wisher.ui.components
+package tc.tcapps.birthday_wisher.ui.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp

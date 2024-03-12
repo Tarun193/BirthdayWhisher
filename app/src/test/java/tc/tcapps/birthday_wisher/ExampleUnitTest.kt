@@ -1,4 +1,4 @@
-package com.example.birthday_wisher
+package tc.tcapps.birthday_wisher
 
 import org.junit.Test
 

@@ -7,16 +7,28 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.birthday_wisher.HomeFragment"
+        android:name="tc.tcapps.birthday_wisher.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_addContactFragment"
             app:destination="@id/addContactFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_updateDeleteFragment"
+            app:destination="@id/updateDeleteFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/updateDeleteFragment"
+        android:name="tc.tcapps.birthday_wisher.UpdateDeleteFragment"
+        android:label="updateDeleteFragment"
+        tools:layout="@layout/fragment_update_delete">
+    </fragment>
+
+
     <fragment
         android:id="@+id/addContactFragment"
-        android:name="com.example.birthday_wisher.AddContactFragment"
+        android:name="tc.tcapps.birthday_wisher.AddContactFragment"
         android:label="AddContactFragment"
         tools:layout="@layout/fragment_add_contact"
         >

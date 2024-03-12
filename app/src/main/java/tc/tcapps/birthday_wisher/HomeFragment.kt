@@ -1,4 +1,4 @@
-package com.example.birthday_wisher
+package tc.tcapps.birthday_wisher
 
 import android.app.Activity
 import android.os.Bundle
@@ -8,14 +8,15 @@ import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.birthday_wisher.databinding.FragmentHomeBinding
-import com.example.birthday_wisher.ui.components.CustomListItem
-import com.example.birthday_wisher.ui.components.MyAppBar
-import com.example.birthday_wisher.viewModles.ContactsViewModel
-import com.example.birthday_wisher.viewModles.UserViewModel
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import tc.tcapps.birthday_wisher.databinding.FragmentHomeBinding
+import tc.tcapps.birthday_wisher.ui.components.CustomListItem
+import tc.tcapps.birthday_wisher.ui.components.MyAppBar
+import tc.tcapps.birthday_wisher.viewModles.ContactsViewModel
+import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 
 class HomeFragment: Fragment() {
     private var _binding: FragmentHomeBinding? = null;
@@ -57,14 +58,16 @@ class HomeFragment: Fragment() {
 
         binding.composeView.setContent {
             val contacts = contactsViewModel.contacts;
-            updateUI(contacts);
+            updateUI(contacts, onClick = {
+                findNavController().navigate(R.id.action_homeFragment_to_updateDeleteFragment)
+            });
         }
 
 
     }
     @Composable
-    fun updateUI(contacts: List<Map<String, Any>>) {
-        CustomListItem(contacts);
+    fun updateUI(contacts: List<Map<String, Any>>, onClick: () -> Unit) {
+        CustomListItem(contacts, onClick = onClick, contactsViewModel);
 
     }
 

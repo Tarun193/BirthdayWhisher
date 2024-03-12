@@ -1,4 +1,4 @@
-package com.example.birthday_wisher.viewModles
+package tc.tcapps.birthday_wisher.viewModles
 
 import android.app.Activity
 import android.util.Log

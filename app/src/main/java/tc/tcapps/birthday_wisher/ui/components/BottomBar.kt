@@ -1,4 +1,4 @@
-package com.example.birthday_wisher.ui.components
+package tc.tcapps.birthday_wisher.ui.components
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size

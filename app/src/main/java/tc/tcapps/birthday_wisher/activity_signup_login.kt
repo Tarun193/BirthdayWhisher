@@ -1,4 +1,4 @@
-package com.example.birthday_wisher
+package tc.tcapps.birthday_wisher
 
 import android.app.Activity
 import android.content.Intent
@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.example.birthday_wisher.databinding.ActivitySignupLoginBinding
-import com.example.birthday_wisher.viewModles.UserViewModel
+import tc.tcapps.birthday_wisher.databinding.ActivitySignupLoginBinding
+import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 
 class activity_signup_login : AppCompatActivity() {
     private lateinit var binding: ActivitySignupLoginBinding;
