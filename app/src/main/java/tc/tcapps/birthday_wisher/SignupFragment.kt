@@ -13,8 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,7 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,7 +35,6 @@ class SignupFragment : Fragment() {
     private lateinit var db: FirebaseFirestore;
     private lateinit var googleSignInClient: GoogleSignInClient;
     private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
-    private lateinit var callbackManager: CallbackManager;
     private val userViewModel by activityViewModels<UserViewModel>();
 
     private val binding get() = _binding!!;
@@ -201,33 +197,6 @@ class SignupFragment : Fragment() {
         }
     }
 
-
-    private fun handleFacebookAccessToken(token: AccessToken) {
-        Log.d("Facebook", "handleFacebookAccessToken:$token")
-
-        val credential = FacebookAuthProvider.getCredential(token.token)
-        activity?.let{
-            if(it is Activity){
-                auth.signInWithCredential(credential)
-                    .addOnCompleteListener(it) { task ->
-                        if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("Facebook", "signInWithCredential:success")
-                            val user = auth.currentUser
-                            Log.i("Facebook", "name: ${user?.displayName}");
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("Facebook", "signInWithCredential:failure", task.exception)
-                            Toast.makeText(
-                                activity,
-                                "Authentication failed.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                        }
-                    }
-            }
-        }
-    }
 
     private fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent

@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import com.google.firebase.messaging.FirebaseMessaging
 
 class UserViewModel : ViewModel() {
     private val _userId = MutableLiveData<String?>()
@@ -18,6 +19,8 @@ class UserViewModel : ViewModel() {
     // Reference to Firebase Auth
     private val auth: FirebaseAuth = Firebase.auth
     private val db = Firebase.firestore;
+
+    private val TAG = "UserViewModel";
 
     fun setUserId(userId: String?) {
         _userId.value = userId
@@ -34,6 +37,7 @@ class UserViewModel : ViewModel() {
                 if(task.isSuccessful){
                     val user = auth.currentUser;
                     _userId.value = user?.uid;
+                    addFCMTokenToUser();
                 }
                 else{
                     Log.i("Firebase", "Some Error occurred", task.exception)
@@ -49,6 +53,7 @@ class UserViewModel : ViewModel() {
                     val user = auth.currentUser;
                     _userId.value = user?.uid;
                     addUserToCollection(user, user?.displayName);
+                    addFCMTokenToUser();
                 }
                 else{
                     Log.i("Firebase", "Some Error occurred", task.exception)
@@ -67,6 +72,7 @@ class UserViewModel : ViewModel() {
                     val user = auth.currentUser;
                     _userId.value = user?.uid;
                     addUserToCollection(user, name);
+                    addFCMTokenToUser();
                 }
                 else{
                     Log.i("Firebase", "Some Error occurred", task.exception)
@@ -76,7 +82,7 @@ class UserViewModel : ViewModel() {
 
 
 
-//    Utlity function to add user to collection
+//    Utility function to add user to collection
     private fun addUserToCollection(user: FirebaseUser?, name: String?) {
 //        Now adding that user to User collection
         val userMap = hashMapOf(
@@ -101,5 +107,29 @@ class UserViewModel : ViewModel() {
     fun Logout(){
         auth.signOut();
         _userId.value = null;
+    }
+
+    private fun addFCMTokenToUser() {
+        val user = auth.currentUser;
+        user?.uid?.let {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    return@addOnCompleteListener
+                }
+
+                // Get new FCM registration token
+                val token = task.result
+                val userRef = db.collection("Users").document(it)
+
+                // Update the token in Firestore
+                userRef.update("fcmToken", token).addOnSuccessListener {
+                    Log.d(TAG, "FCM Token updated in Firestore")
+                }.addOnFailureListener{
+                    Log.w(TAG, "Error updating FCM Token in Firestore", it)
+                }
+            }
+
+        }
     }
 }

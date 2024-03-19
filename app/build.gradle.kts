@@ -65,7 +65,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
-    implementation("com.facebook.android:facebook-login:latest.release")
+    implementation("com.google.firebase:firebase-messaging")
 
 
     implementation("androidx.compose.material3:material3:1.2.0")
