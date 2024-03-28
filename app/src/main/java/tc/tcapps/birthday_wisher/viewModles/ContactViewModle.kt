@@ -10,6 +10,7 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import com.google.firebase.functions.functions
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
@@ -24,9 +25,13 @@ class ContactsViewModel : ViewModel() {
 
     private var auth = Firebase.auth;
     private var db = Firebase.firestore;
-    var user = auth.currentUser;
+    private var user = auth.currentUser;
+    private var functions = Firebase.functions;
+
+    private val TAG = "ContactsViewModel";
+
     var contactTobeUpdated: Map<String, Any>? = null
-    private set
+        private set
 
     init{
         fetchContacts();
@@ -79,6 +84,7 @@ class ContactsViewModel : ViewModel() {
                         Log.i("Firebase", "Contact reference added to user successfully");
                         fetchContacts();
                         sortContactsByMonthAndDay();
+                        callCloudFunctionToSendNotifications();
                     }
                     .addOnFailureListener { e ->
                         Log.i("Firebase", "Error adding contact reference to user", e)
@@ -127,6 +133,7 @@ class ContactsViewModel : ViewModel() {
                 Log.i("Updated", "DataUpdated")
                 fetchContacts();
                 sortContactsByMonthAndDay();
+                callCloudFunctionToSendNotifications();
                 contactTobeUpdated = null;
             }
     }
@@ -143,6 +150,18 @@ class ContactsViewModel : ViewModel() {
                         contactTobeUpdated = null;
                     }
 
+            }
+    }
+
+    private fun callCloudFunctionToSendNotifications(){
+        // Call cloud function to send notifications
+        functions.getHttpsCallable("sendBirthdayNotifications")
+            .call()
+            .addOnSuccessListener { result ->
+                Log.d(TAG, "Successfully sent notifications")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error sending notifications", e)
             }
     }
 }

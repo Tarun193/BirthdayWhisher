@@ -22,8 +22,8 @@ android {
         applicationId = "tc.tcapps.birthday_wisher"
         minSdk = 25
         targetSdk = 34
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 3
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,6 +66,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-functions")
 
 
     implementation("androidx.compose.material3:material3:1.2.0")

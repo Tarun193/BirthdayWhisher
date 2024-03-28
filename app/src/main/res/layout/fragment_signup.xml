@@ -39,6 +39,7 @@
             android:ems="10"
             android:hint="Name"
             android:inputType="text"
+            style="@style/Widget.App.EditText"
             android:textSize="20sp" />
 
         <EditText
@@ -50,6 +51,7 @@
             android:ems="10"
             android:hint="Email"
             android:inputType="textEmailAddress"
+            style="@style/Widget.App.EditText"
             android:textSize="20sp" />
 
         <EditText
@@ -61,6 +63,7 @@
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
+            style="@style/Widget.App.EditText"
             android:textSize="20sp" />
 
         <EditText
@@ -72,17 +75,20 @@
             android:ems="10"
             android:hint="Confirm Password"
             android:inputType="textPassword"
+            style="@style/Widget.App.EditText"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/LoginLink"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:text="Login"
-            android:textColor="#2196F3"
-            android:textSize="20sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Already have an account? Log in."
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:textAppearance="?attr/textAppearanceBody1" />
+
 
         <Button
             android:id="@+id/button"
@@ -91,6 +97,7 @@
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:text="SignUp"
+            style="@style/Widget.App.Button"
             android:textSize="20sp" />
 
         <Button
@@ -100,6 +107,7 @@
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:text="Continue with Google"
+            style="@style/Widget.App.Button"
             android:textSize="20sp" />
     </LinearLayout>
 
