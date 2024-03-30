@@ -10,6 +10,7 @@
         <item name="android:background">@drawable/edittext_background</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:padding">4dp</item>
+        <item name="android:textColorHint">@color/black</item>
         <!-- Add any other styling you require -->
     </style>
     <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">

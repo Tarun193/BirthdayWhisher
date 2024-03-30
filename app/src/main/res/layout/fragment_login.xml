@@ -16,41 +16,39 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="371dp"
-        android:layout_height="356dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="424dp"
         android:orientation="vertical"
-        android:padding="10dp"
+        android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topBar"
-        app:layout_constraintVertical_bias="0.422">
+        >
 
         <EditText
             android:id="@+id/editEmail"
+            style="@style/Widget.App.EditText"
             android:layout_width="match_parent"
             android:layout_height="67dp"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:ems="10"
             android:hint="Email"
-            style="@style/Widget.App.EditText"
             android:inputType="textEmailAddress"
             android:textSize="20sp" />
 
         <EditText
             android:id="@+id/editPassword"
+            style="@style/Widget.App.EditText"
             android:layout_width="match_parent"
             android:layout_height="67dp"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:ems="10"
             android:hint="Password"
-            android:padding="4dp"
             android:inputType="textPassword"
-            style="@style/Widget.App.EditText"
+            android:padding="4dp"
             android:textSize="20sp" />
 
         <TextView
@@ -63,21 +61,21 @@
 
         <Button
             android:id="@+id/button"
+            style="@style/Widget.App.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:text="Login"
-            style="@style/Widget.App.Button"
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/Google"
+            style="@style/Widget.App.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
-            style="@style/Widget.App.Button.Secondary"
             android:text="Continue with Google"
             android:textSize="20sp" />
 

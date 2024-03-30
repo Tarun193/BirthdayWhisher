@@ -18,20 +18,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="369dp"
-        android:layout_height="599dp"
+        android:layout_width="371dp"
+        android:layout_height="513dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:orientation="vertical"
-        android:padding="10dp"
+        android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topBar"
-        app:layout_constraintVertical_bias="0.265">
+        app:layout_constraintVertical_bias="0.385">
 
         <EditText
             android:id="@+id/editName"
+            style="@style/Widget.App.EditText"
             android:layout_width="match_parent"
             android:layout_height="67dp"
             android:layout_marginTop="7dp"
@@ -39,11 +40,11 @@
             android:ems="10"
             android:hint="Name"
             android:inputType="text"
-            style="@style/Widget.App.EditText"
             android:textSize="20sp" />
 
         <EditText
             android:id="@+id/editEmail"
+            style="@style/Widget.App.EditText"
             android:layout_width="match_parent"
             android:layout_height="67dp"
             android:layout_marginTop="7dp"
@@ -51,11 +52,11 @@
             android:ems="10"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            style="@style/Widget.App.EditText"
             android:textSize="20sp" />
 
         <EditText
             android:id="@+id/editPassword1"
+            style="@style/Widget.App.EditText"
             android:layout_width="match_parent"
             android:layout_height="67dp"
             android:layout_marginTop="7dp"
@@ -63,11 +64,11 @@
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
-            style="@style/Widget.App.EditText"
             android:textSize="20sp" />
 
         <EditText
             android:id="@+id/editPassword2"
+            style="@style/Widget.App.EditText"
             android:layout_width="match_parent"
             android:layout_height="67dp"
             android:layout_marginTop="7dp"
@@ -75,39 +76,38 @@
             android:ems="10"
             android:hint="Confirm Password"
             android:inputType="textPassword"
-            style="@style/Widget.App.EditText"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/LoginLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Already have an account? Log in."
-            android:textColor="@color/colorPrimary"
-            android:gravity="center"
             android:clickable="true"
             android:focusable="true"
-            android:textAppearance="?attr/textAppearanceBody1" />
+            android:gravity="center"
+            android:text="Already have an account? Log in."
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/colorPrimary" />
 
 
         <Button
             android:id="@+id/button"
+            style="@style/Widget.App.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:text="SignUp"
-            style="@style/Widget.App.Button"
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/Google"
+            style="@style/Widget.App.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:text="Continue with Google"
-            style="@style/Widget.App.Button"
             android:textSize="20sp" />
     </LinearLayout>
 

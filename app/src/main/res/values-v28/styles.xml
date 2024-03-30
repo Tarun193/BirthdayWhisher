@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/buttonTextColor</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:buttonCornerRadius">10dp</item>
+
+        <!-- Add any other styling you require -->
+    </style>
+</resources>
