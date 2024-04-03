@@ -59,9 +59,9 @@
             android:text="Create a New Account" />
 
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
-            style="@style/Widget.App.Button"
+            style="Widget.MaterialComponents.Button.UnelevatedButton.Container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
@@ -69,16 +69,21 @@
             android:text="Login"
             android:textSize="20sp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/Google"
-            style="@style/Widget.App.Button"
+            style="Widget.MaterialComponents.Button.UnelevatedButton.Container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:text="Continue with Google"
-            android:textSize="20sp" />
-
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/google_signin"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:backgroundTint="@color/google_signin_bg"
+            app:icon="@drawable/googleg_standard_color_18"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
