@@ -27,53 +27,77 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topBar">
 
-        <EditText
-            android:id="@+id/editName"
-            style="@style/Widget.App.EditText"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutName"
+            style="@style/Widget.App.TextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="67dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
-            android:ems="10"
-            android:hint="Name"
-            android:inputType="text"
-            android:textSize="20sp" />
+            android:hint="Name">
 
-        <EditText
-            android:id="@+id/editEmail"
-            style="@style/Widget.App.EditText"
-            android:layout_width="match_parent"
-            android:layout_height="67dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:textSize="20sp" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/editPassword1"
-            style="@style/Widget.App.EditText"
-            android:layout_width="match_parent"
-            android:layout_height="67dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textSize="20sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/editPassword2"
-            style="@style/Widget.App.EditText"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutEmail"
+            style="@style/Widget.App.TextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="67dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
-            android:ems="10"
-            android:hint="Confirm Password"
-            android:inputType="textPassword"
-            android:textSize="20sp" />
+            android:hint="Email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPassword1"
+            style="@style/Widget.App.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:hint="Password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editPassword1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPassword2"
+            style="@style/Widget.App.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:hint="Password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editPassword2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/LoginLink"
@@ -84,7 +108,8 @@
             android:gravity="center"
             android:text="Already have an account? Log in."
             android:textAppearance="?attr/textAppearanceBody1"
-            android:textColor="@color/colorPrimary" />
+            android:textSize="18sp"
+            android:textColor="@color/white" />
 
 
         <com.google.android.material.button.MaterialButton

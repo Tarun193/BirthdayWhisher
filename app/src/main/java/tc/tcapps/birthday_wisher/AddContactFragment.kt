@@ -179,9 +179,9 @@ public class AddContactFragment: Fragment(){
     }
 
     private fun clearInputs(){
-        binding.editName.text.clear();
-        binding.editPhone.text.clear();
-        binding.editMessage.text.clear();
+        binding.editName.text?.clear();
+        binding.editPhone.text?.clear();
+        binding.editMessage.text?.clear();
         spinner.setSelection(0);
         binding.textDate.text = "Select Date";
     }

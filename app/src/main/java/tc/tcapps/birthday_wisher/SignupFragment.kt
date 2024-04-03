@@ -167,10 +167,10 @@ class SignupFragment : Fragment() {
 
 
     private fun clearText(){
-        binding.editName.text.clear();
-        binding.editEmail.text.clear();
-        binding.editPassword2.text.clear();
-        binding.editPassword1.text.clear();
+        binding.editName.text?.clear();
+        binding.editEmail.text?.clear();
+        binding.editPassword2.text?.clear();
+        binding.editPassword1.text?.clear();
     }
 
     private fun checkPassword(): Boolean {

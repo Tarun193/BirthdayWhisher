@@ -119,8 +119,8 @@ class LoginFragment: Fragment(){
     }
 
     private fun clearText(){
-        binding.editEmail.text.clear();
-        binding.editPassword.text.clear();
+        binding.editEmail.text?.clear();
+        binding.editPassword.text?.clear();
     }
 
 
