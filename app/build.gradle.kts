@@ -78,5 +78,7 @@ dependencies {
         // Use the latest version available
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
 
+    implementation("com.airbnb.android:lottie:4.2.0")
+
 
 }

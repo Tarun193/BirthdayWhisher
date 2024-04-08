@@ -1,142 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_signup"
-    >
+    android:fillViewport="true">
 
-    <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/topBar"
-        background="#000000"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_signup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topBar">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutName"
-            style="@style/Widget.App.TextInputLayout"
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/topBar"
+            android:background="#000000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:hint="Name">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editName"
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/rainofgifts"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"
+            android:alpha="0.5"
+            />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topBar">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutName"
+                style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:textSize="20sp" />
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:hint="Name">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="20sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutEmail"
-            style="@style/Widget.App.TextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:hint="Email">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editEmail"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutEmail"
+                style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:textSize="20sp" />
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:hint="Email">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:textSize="20sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutPassword1"
-            style="@style/Widget.App.TextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:hint="Password">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editPassword1"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutPassword1"
+                style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:textSize="20sp" />
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:hint="Password">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editPassword1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textSize="20sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutPassword2"
-            style="@style/Widget.App.TextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:hint="Password">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editPassword2"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutPassword2"
+                style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:hint="Password">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editPassword2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textSize="20sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/LoginLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="Already have an account? Log in."
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button"
+                style="Widget.MaterialComponents.Button.UnelevatedButton.Container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:text="Sign up"
                 android:textSize="20sp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/Google"
+                style="Widget.MaterialComponents.Button.UnelevatedButton.Container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/google_signin"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:backgroundTint="@color/google_signin_bg"
+                app:icon="@drawable/googleg_standard_color_18"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/LoginLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="Already have an account? Log in."
-            android:textAppearance="?attr/textAppearanceBody1"
-            android:textSize="18sp"
-            android:textColor="@color/white" />
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button"
-            style="Widget.MaterialComponents.Button.UnelevatedButton.Container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:text="Sign up"
-            android:textSize="20sp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/Google"
-            style="Widget.MaterialComponents.Button.UnelevatedButton.Container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="@string/google_signin"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:backgroundTint="@color/google_signin_bg"
-            app:icon="@drawable/googleg_standard_color_18"
-            app:iconGravity="textStart"
-            app:iconPadding="8dp" />
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
