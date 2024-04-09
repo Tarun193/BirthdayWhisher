@@ -20,40 +20,50 @@ import java.util.Locale
 
 
 class ContactsViewModel : ViewModel() {
+    // Mutable list of contacts, publicly readable but privately modifiable
     var contacts = mutableStateListOf<Map<String, Any>>()
         private set
 
+    // Firebase authentication and Firestore database references
     private var auth = Firebase.auth;
     private var db = Firebase.firestore;
-    private var user = auth.currentUser;
-    private var functions = Firebase.functions;
+    private var user = auth.currentUser; // Current signed-in user
+    private var functions = Firebase.functions; // Firebase Cloud Functions reference
 
-    private val TAG = "ContactsViewModel";
+    private val TAG = "ContactsViewModel"; // Tag for logging
 
+    // Variable to hold a contact that is selected for updating
     var contactTobeUpdated: Map<String, Any>? = null
         private set
 
+    // Initializer block that fetches contacts as soon as the ViewModel is created
     init{
         fetchContacts();
     }
 
+    // Private function to fetch contacts from Firestore based on the current user's ID
     private fun fetchContacts() {
         viewModelScope.launch {
             user?.uid?.let { id ->
-                val document = db.collection("Users").document(id).get().await() // Await the document
+                // Asynchronously retrieve the document for the current user
+                val document = db.collection("Users").document(id).get().await()
                 if (document != null) {
+                    // Extract the 'contacts' field from the user document
                     val contactsRaw = document.data?.get("contacts")
                     val contactsData: List<DocumentReference> = when (contactsRaw) {
+                        // Ensure the contacts data is a list of DocumentReferences
                         is List<*> -> contactsRaw.filterIsInstance<DocumentReference>()
                         else -> emptyList()
                     }
 
-                    // Fetch contacts concurrently and convert them to Contact instances
+                    // Clear existing contacts and fetch new ones concurrently
                     contacts.clear();
                     val fetchJobs = contactsData.map { contactRef ->
                         async {
-                            val contactDoc = contactRef.get().await() // Await each contact document
+                            // For each contact reference, fetch the document data
+                            val contactDoc = contactRef.get().await()
                             if (contactDoc.exists()) {
+                                // Add each fetched contact to the 'contacts' list with its document ID
                                 contactDoc.data?.let {
                                     it["id"] = contactDoc.id;
                                     contacts.add(it)
@@ -61,12 +71,10 @@ class ContactsViewModel : ViewModel() {
                             }
                         }
                     }
-                    fetchJobs.awaitAll() // Wait for all fetch operations to complete
+                    fetchJobs.awaitAll() // Wait for all asynchronous fetches to complete
 
-                    // Now that all contacts have been fetched, sort them based on your criteria
+                    // Once contacts are fetched, sort them (implementation not shown here)
                     sortContactsByMonthAndDay();
-
-                    // Use fetchedContacts as needed, now fully fetched and sorted
                 } else {
                     Log.i("Firebase", "Document not found")
                 }
@@ -74,16 +82,19 @@ class ContactsViewModel : ViewModel() {
         }
     }
 
+    // Public function to add a new contact to Firestore and update the UI
     fun addContact(contact: Map<String, Any>) {
         viewModelScope.launch {
-            Log.i("Firebase", "${auth.currentUser?.uid}")
+            // Add the contact to the "Contacts" collection
             db.collection("Contacts").add(contact).addOnSuccessListener { docRef ->
+                // On success, update the user's 'contacts' field with the new contact reference
                 val userRef = db.collection("Users").document(auth.currentUser!!.uid)
                 userRef.update("contacts", FieldValue.arrayUnion(docRef))
                     .addOnSuccessListener {
-                        Log.i("Firebase", "Contact reference added to user successfully");
+                        // Fetch and sort contacts again after successful addition
                         fetchContacts();
                         sortContactsByMonthAndDay();
+                        // Optionally, call a cloud function (not shown here)
                         callCloudFunctionToSendNotifications();
                     }
                     .addOnFailureListener { e ->
@@ -95,11 +106,13 @@ class ContactsViewModel : ViewModel() {
         }
     }
 
+//    Function to check if contacts exist
     fun contactsExist(): Boolean {
         return contacts.isNotEmpty();
     }
 
 
+//    Function to sort contacts by month and day
     private fun sortContactsByMonthAndDay() {
         val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.US)
 
@@ -122,11 +135,14 @@ class ContactsViewModel : ViewModel() {
         }
     }
 
+//    Function to set the contact to be updated
     fun setContactTobeUpdated(contact: Map<String, Any>) {
         contactTobeUpdated = contact;
     }
 
+
     fun updateContact(updateData: Map<String, Any>){
+//        Update the contact in the database with the new data and update the UI
         db.collection("Contacts")
             .document(contactTobeUpdated?.get("id").toString())
             .update(updateData).addOnSuccessListener {
@@ -138,8 +154,11 @@ class ContactsViewModel : ViewModel() {
             }
     }
 
+//    Function to delete a contact
     fun deleteContact(){
+//        Get the reference of the contact to be deleted
         val contactRef =db.collection("Contacts").document(contactTobeUpdated?.get("id").toString());
+//    Delete the contact reference from the contacts collection and update the user's contacts.
         contactRef.delete().addOnSuccessListener {
                 db.collection("Users")
                     .document(user?.uid!!)
@@ -153,6 +172,7 @@ class ContactsViewModel : ViewModel() {
             }
     }
 
+//    Function to call the cloud function to send notifications to the contacts whose birthday is today
     private fun callCloudFunctionToSendNotifications(){
         // Call cloud function to send notifications
         functions.getHttpsCallable("sendBirthdayNotifications")

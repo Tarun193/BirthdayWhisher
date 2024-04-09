@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ContentAlpha
 import tc.tcapps.birthday_wisher.viewModles.ContactsViewModel
 
+// This is the CustomListItem composable that is used in the app to display a list of contacts.
+// it take a list of contacts, a function that is called when a contact is clicked, and a ContactsViewModel object as parameters
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun CustomListItem(contacts: List<Map<String, Any>>, onClick: () -> Unit, contactsViewModel: ContactsViewModel ) {
@@ -62,6 +64,7 @@ fun CustomListItem(contacts: List<Map<String, Any>>, onClick: () -> Unit, contac
 
 }
 
+// This is the customListItemColors function that is used to set the colors of the CustomListItem
 @Composable
 fun customListItemColors(): ListItemColors {
     val textColor = Color.Black
@@ -81,8 +84,11 @@ fun customListItemColors(): ListItemColors {
     )
 }
 
+// This is the DOBFormatter function that is used to format the date of birth
 private fun DOBFormatter(DOB: String): String{
+//    Split the DOB string into an array of strings
     val date = DOB.split("-");
+//    Check the month and return the month name
     when(date[1]){
         "1" -> return date[0] + " January";
         "2" -> return date[0] + " February";

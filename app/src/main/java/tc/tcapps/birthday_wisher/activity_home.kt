@@ -18,10 +18,10 @@ import tc.tcapps.birthday_wisher.ui.components.BottomAppBar
 import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 
 
-class activity_home: AppCompatActivity() {
-
+class activity_home : AppCompatActivity() {
+    // Register for permission result
     private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
+        ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
             // FCM SDK (and your app) can post notifications.
@@ -30,41 +30,50 @@ class activity_home: AppCompatActivity() {
         }
     }
 
-
     private lateinit var binding: ActivityHomeBinding;
     private val userViewModel by viewModels<UserViewModel>();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
+
+        // Inflate the layout using ViewBinding
         binding = ActivityHomeBinding.inflate(layoutInflater);
         setContentView(binding.root);
 
+        // Observe userId changes
         userViewModel.userId.observe(this, Observer { userId ->
             if (userId == null) {
+                // Change activity to signup/login
                 changeActivity(this);
                 this.finish();
             }
         });
 
+        // Set content for BottomAppBar
         binding.bottomBar.setContent {
             BottomAppBar(
                 onHomeClick = {
+                    // Navigate to homeFragment
                     findNavController(R.id.nav_host_fragment).navigate(R.id.homeFragment);
                 },
                 onAddClick = {
+                    // Navigate to addContactFragment
                     findNavController(R.id.nav_host_fragment).navigate(R.id.addContactFragment);
-
                 }
             );
         }
+
+        // Ask for notification permission
         askNotificationPermission();
     }
 
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
             ) {
                 // FCM SDK (and your app) can post notifications.
             } else {
@@ -75,9 +84,8 @@ class activity_home: AppCompatActivity() {
     }
 
     private fun changeActivity(act: Activity) {
+        // Change activity to activity_signup_login
         val intent = Intent(act, activity_signup_login::class.java);
         startActivity(intent);
-
     }
-
 }

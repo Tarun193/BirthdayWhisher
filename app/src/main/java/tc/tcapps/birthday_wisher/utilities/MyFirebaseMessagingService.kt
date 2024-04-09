@@ -8,8 +8,8 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
+// This class extends FirebaseMessagingService to handle FCM messages.
 class MyFirebaseMessagingService : FirebaseMessagingService() {
-
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // Handle FCM messages here
         Log.d(TAG, "From: ${remoteMessage.from}")
@@ -25,6 +25,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+//    This function is called when a new token is generated
     override fun onNewToken(token: String) {
         // Handle new or refreshed FCM registration token
         Log.d(TAG, "Refreshed token: $token")
@@ -37,7 +38,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             // Get new FCM registration token
             val token = task.result
 
-            // Assuming you have a method to get the current user's ID
+//           Update the FCM token in Firestore
             val userId = Firebase.auth.currentUser?.uid?.let{
                 val userRef = Firebase.firestore.collection("users").document(it)
                 userRef.update("fcmToken", token).addOnSuccessListener {

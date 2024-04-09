@@ -30,21 +30,27 @@ import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 
 
 class LoginFragment: Fragment(){
+//    Declare variables for binding, authentication, Firestore, and GoogleSignInClient.
     private var _binding: FragmentLoginBinding? = null;
     private val binding get() = _binding!!;
     private lateinit var auth: FirebaseAuth;
     private lateinit var db: FirebaseFirestore;
     private lateinit var googleSignInClient: GoogleSignInClient;
     private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
+//    Creating an  ViewModels object for User.
     private val userViewModel by activityViewModels<UserViewModel>();
 
+//    This function is called when the fragment is created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
+//    Initialize Firebase authentication and Firestore
         auth = Firebase.auth;
         db = Firebase.firestore;
 
+//    Register for GoogleSignInClient and ActivityResultLauncher
         googleSignInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
 
+//            Handle the result of the GoogleSignIn
             if(result.resultCode == Activity.RESULT_OK){
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data);
                 handleSignInResult(task);
@@ -63,6 +69,7 @@ class LoginFragment: Fragment(){
         }
     }
 
+//    Inflate the layout for this fragment
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,30 +78,35 @@ class LoginFragment: Fragment(){
         _binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.root;
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         binding.SignupLink.setOnClickListener{
             findNavController().navigate(R.id.action_fragment_login_to_fragment_signup);
         }
 
+//        Set the content for the top bar with the title "Login" and isLoggedIn as false
+//        as the user is not logged in.
         binding.topBar.setContent {
             MyAppBar("Login", isLoggedIn = false, logoutClick = {});
         }
-
-
+//        creating a GoogleSignInClient and setting the onClick listener for the Google button.
         googleSignInClient  = getGoogleSignInClient();
         binding.Google.setOnClickListener(){
+//            calling the signInWithGoogle function to sign in with Google.
             signInWithGoogle();
         }
 
+//        Setting the onClick listener for the login button.
         binding.button.setOnClickListener{
             val email = binding.editEmail.text.toString();
             val password = binding.editPassword.text.toString();
 
+//            Call the loginWithEmailAndPassword function of the ViewModel to login with email and password.
             activity?.let { act ->
                 if (act is Activity) {
+//                    Check if the email and password are empty
                     if(!checkEmpty()){
                         userViewModel.loginWithEmailAndPassword(email, password, act);
                         Toast.makeText(act, "Logged in successfully!!", Toast.LENGTH_SHORT).show();
@@ -105,6 +117,7 @@ class LoginFragment: Fragment(){
         }
     }
 
+//    This function is used to check if the email and password are empty.
     private fun checkEmpty(): Boolean {
         var result = false;
         if(binding.editEmail.text.toString().trim().isEmpty()){
@@ -123,6 +136,7 @@ class LoginFragment: Fragment(){
         binding.editPassword.text?.clear();
     }
 
+//    This function is used to handle the result of the GoogleSignIn
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
@@ -136,6 +150,7 @@ class LoginFragment: Fragment(){
     }
 
 
+//    This function is used to get the GoogleSignInClient
     private fun getGoogleSignInClient(): GoogleSignInClient {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id)) // Make sure you have the correct web client id
@@ -144,9 +159,11 @@ class LoginFragment: Fragment(){
         return GoogleSignIn.getClient(requireActivity(), gso)
     }
 
-
+//    This function is used to sign in with Google
     private fun signInWithGoogle() {
+//        Create a sign in intent
         val signInIntent = googleSignInClient.signInIntent
+//    Launch the sign in intent
         googleSignInLauncher.launch(signInIntent)
     }
 }

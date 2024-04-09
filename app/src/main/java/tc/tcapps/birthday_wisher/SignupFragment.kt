@@ -30,18 +30,22 @@ import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 
 
 class SignupFragment : Fragment() {
+//    Declare variables for binding, authentication, Firestore, and GoogleSignInClient.
     private var _binding: FragmentSignupBinding? = null;
+    private val binding get() = _binding!!;
     private lateinit var auth: FirebaseAuth;
     private lateinit var db: FirebaseFirestore;
     private lateinit var googleSignInClient: GoogleSignInClient;
     private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
+//    Creating an  ViewModels object for User.
     private val userViewModel by activityViewModels<UserViewModel>();
 
-    private val binding get() = _binding!!;
-
+//    This function is called when the fragment is created
     override fun onCreate(savedInstanceState: Bundle?) {
+//        Initialize Firebase authentication and Firestore
         auth = Firebase.auth;
         super.onCreate(savedInstanceState)
+//      Register for GoogleSignInClient and ActivityResultLauncher
         googleSignInLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 Log.i("Firebase", "${result.resultCode} ${Activity.RESULT_OK}");
@@ -61,9 +65,11 @@ class SignupFragment : Fragment() {
                 }
             }
     }
+
+//    Inflate the layout for this fragment
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSignupBinding.inflate(inflater, container, false);
-        //        Grabbing firebase services instance
+        //    Grabbing firebase services instance
         auth = Firebase.auth;
         db = Firebase.firestore
 
@@ -73,24 +79,31 @@ class SignupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState);
 
+//        Setting the content for the top bar with the title "Sign Up" and a logout button
+//        which is not visible in this fragment.
         binding.topBar.setContent {
             MyAppBar("Sign Up", isLoggedIn = false, logoutClick = {});
         }
 
+//        Checking if the user is already logged in or not
         if(auth.currentUser != null){
             userViewModel.setUserId(auth.currentUser?.uid);
         }
 
+//       Setting the click listener for the login link to navigate to the login fragment
         binding.LoginLink.setOnClickListener{
             findNavController().navigate(R.id.action_fragment_signup_to_fragment_login);
         }
 
+//        Creating a GoogleSignInClient instance
         googleSignInClient = getGoogleSignInClient()
 
+//        Setting the onClick listener for the Google button
         binding.Google.setOnClickListener {
             signInWithGoogle()
         }
 
+//        Setting the onClick listener for the sign up button
         binding.button.setOnClickListener{
 
 //            Grabbing all the values from the form;
@@ -101,10 +114,12 @@ class SignupFragment : Fragment() {
 
             var PasswordStrong = true;
 
+//             Checking if the password is strong or not
             if(checkPassword()){
                 Toast.makeText(activity, "Password should be at least 6 characters", Toast.LENGTH_SHORT).show();
                 PasswordStrong = false;
             }
+
 
 
 //            Checking weather all the fields are filled or not.
@@ -118,6 +133,7 @@ class SignupFragment : Fragment() {
 
                     activity?.let { act ->
                         if (act is Activity && PasswordStrong) {
+//                            Calling the signUpWithEmailAndPassword function of the ViewModel to sign up with email and password.
                             userViewModel.signUpWithEmailAndPassword(email, password1, name, act);
                             Toast.makeText(act, "User created successfully!!", Toast.LENGTH_SHORT).show();
                             clearText();
@@ -139,10 +155,12 @@ class SignupFragment : Fragment() {
         }
     }
 
+//    This function is used to check if the email and password are empty.
     private fun checkEmpty(): Boolean {
         var result = false;
         //            Checking if any of the field from the form is empty adding an error to that field
 
+//        Checking if the name is empty or not, if empty then adding an error to the field
         if(binding.editName.text.toString().trim().isEmpty()){
             binding.editName.error = "Name required";
             result = true;
@@ -166,6 +184,7 @@ class SignupFragment : Fragment() {
     }
 
 
+//    This function is used to clear all the inputs.
     private fun clearText(){
         binding.editName.text?.clear();
         binding.editEmail.text?.clear();
@@ -173,10 +192,12 @@ class SignupFragment : Fragment() {
         binding.editPassword1.text?.clear();
     }
 
+//    This function is used to check if the password is strong or not.
     private fun checkPassword(): Boolean {
         return binding.editPassword1.text.toString().length < 6;
     }
 
+//    This function is used to get the GoogleSignInClient
     private fun getGoogleSignInClient(): GoogleSignInClient {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id)) // Make sure you have the correct web client id
@@ -186,6 +207,7 @@ class SignupFragment : Fragment() {
     }
 
 
+//    This function is used to sign in with Google
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
@@ -198,6 +220,7 @@ class SignupFragment : Fragment() {
     }
 
 
+//    This function is used to sign in with Google
     private fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         googleSignInLauncher.launch(signInIntent)

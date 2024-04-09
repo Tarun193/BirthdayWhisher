@@ -15,12 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 
+
+// This is the MyAppBar composable that is used in the app
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyAppBar(
-    title: String,
-    logoutClick: () -> Unit = {},
-    isLoggedIn: Boolean = false,
+    title: String, // This is the title of the top bar that is displayed
+    logoutClick: () -> Unit = {}, // This is a function that is called when the logout button is clicked
+    isLoggedIn: Boolean = false, // This is a boolean that determines whether the user is logged in or not
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -29,8 +31,9 @@ fun MyAppBar(
         title = { Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
         actions =
         {
+//            If the user is logged in, display a logout button
             if (isLoggedIn) {
-                IconButton(onClick = logoutClick) {
+                IconButton(onClick = logoutClick) { // Set the onClick listener of the IconButton to the logoutClick function
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                         contentDescription = "Localized description"
@@ -38,6 +41,7 @@ fun MyAppBar(
                 }
             }
         },
+//        Set the scrollBehavior of the top bar to the scrollBehavior
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,

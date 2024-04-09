@@ -26,23 +26,28 @@ import tc.tcapps.birthday_wisher.viewModles.UserViewModel
 
 
 public class AddContactFragment: Fragment(){
+    // Declare variables for binding, activity, authentication, and Firestore
     private var _binding: FragmentAddContactBinding? = null;
     private lateinit var act: Activity;
     private val binding get() = _binding!!;
     private lateinit var auth: FirebaseAuth;
     private lateinit var db: FirebaseFirestore;
 
-
+    // Declare variables for contact details
     private lateinit var relationType: String;
     private lateinit var name: String;
     private lateinit var phone: String;
     private lateinit var wish: String;
     private lateinit var DateOfBirth: String;
 
+    // Declare a spinner for the relationship type
     private lateinit var spinner: Spinner;
 
+    // Creating an  ViewModels object for Contacts and User
     private val contactsViewModel by activityViewModels<ContactsViewModel>();
     private val userViewModel by activityViewModels<UserViewModel>();
+
+    // Inflate the layout for this fragment
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,10 +65,13 @@ public class AddContactFragment: Fragment(){
     }
 
 
+//    setup the view and the listeners once the view is created.
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState);
 
-
+//        set the top bar content to the app bar with the title "Add Contact"
+//        and the logout button on the right side of the app bar.
         binding.TopBar.setContent {
             MyAppBar("Add Contact", isLoggedIn = true, logoutClick = {
                 userViewModel.Logout();
@@ -129,13 +137,16 @@ public class AddContactFragment: Fragment(){
 
         }
 
+//        set the click listener for the add contact button
         binding.addContactButton.setOnClickListener{
             name = binding.editName.text.toString();
             phone = binding.editPhone.text.toString();
             wish = binding.editMessage.text.toString();
             DateOfBirth = binding.textDate.text.toString();
 
+//            check if all the inputs are valid
             if(checkAllInputs()){
+//                add the contact to the database
                 contactsViewModel.addContact(hashMapOf(
                     "name" to name,
                     "phone" to phone,
@@ -145,7 +156,9 @@ public class AddContactFragment: Fragment(){
                     "user" to auth.currentUser?.uid!!
                 )
                 )
+//                clear the inputs and navigate to the home fragment
                 clearInputs();
+//                Navigate to the home fragment
                 findNavController().navigate(R.id.action_addContactFragment_to_homeFragment);
             }
         }
@@ -153,6 +166,7 @@ public class AddContactFragment: Fragment(){
     }
 
 
+//    method checks if all the inputs are valid
     private fun checkAllInputs(): Boolean{
         var result = true;
         if(binding.editName.text.toString().trim().isEmpty()){
@@ -177,6 +191,8 @@ public class AddContactFragment: Fragment(){
 
         return result;
     }
+
+//    method to clear all the inputs.
 
     private fun clearInputs(){
         binding.editName.text?.clear();
