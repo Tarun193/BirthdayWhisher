@@ -3,6 +3,8 @@
 ## Purpose of the Application:
 In today's fast-paced world, where personal connections are often overshadowed by the bustle of daily life, it's easy to overlook special occasions like birthdays. This is where the "Birthday Wishes App" comes into play – a mobile application designed to bridge this gap in personal connections. The core functionality of this app is to automatically send birthday wishes to people whose contact details are saved within the app. This innovative tool not only reminds users of upcoming birthdays but also ensures that heartfelt wishes are conveyed on time, fostering stronger bonds and nurturing relationships.
 
+## Demo
+https://github.com/Tarun193/BirthdayWhisher/assets/65712331/abc669d9-1416-40ab-ab29-bc4b22aa8ed4
 ## Target Audience:
 The Birthday Wishes App is ideal for anyone who values personal relationships, from busy professionals who struggle to keep track of important dates to individuals who love to spread joy by remembering and celebrating special moments in the lives of their friends and family.
 
